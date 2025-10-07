@@ -84,7 +84,8 @@ packages/
 ├── mocks/           # MSW mock handlers (disabled by default)
 └── features/        # Optional feature modules
     ├── payments/    # Stripe/Polar integration
-    └── integrations/ # Gmail/Outlook OAuth
+    ├── integrations/ # Gmail/Outlook OAuth
+    └── finance/      # Invoices, expenses, time tracking
 
 tooling/
 ├── tailwind/        # Shared Tailwind config
@@ -98,6 +99,9 @@ All schemas are in `packages/db/src/schema/`:
 - **tasks.ts** - Example task tracking
 - **payments.ts** - Stripe/Polar subscription tracking
 - **integrations.ts** - OAuth connections
+- **invoices.ts** - Invoice management and tracking
+- **expenses.ts** - Expense tracking by category
+- **time-entries.ts** - Time tracking with billable hours
 
 ### UI Components (Modular)
 All UI components are centralized in `packages/ui/src/` for reuse across apps.

@@ -53,6 +53,81 @@ import { CheckoutButton, SubscriptionCard } from "@tocld/features-payments/ui";
 
 ---
 
+### 💼 Finance (`@tocld/features-finance`)
+
+**What it does:**
+- Invoice management (create, track, export)
+- Expense tracking by category with receipt uploads
+- Time tracking with billable/non-billable hours
+- Comprehensive stats and reporting
+- Universal UI components (InvoiceForm, ExpenseForm, TimeTracker)
+
+**Installation:**
+```bash
+# Feature is already scaffolded, just install dependencies
+bun install
+
+# Add to app router (already done in packages/api/src/root.ts)
+```
+
+**Environment variables:**
+```bash
+# None required! Works in mock mode out of the box
+```
+
+**Usage:**
+```tsx
+import { InvoiceForm, ExpenseForm, TimeTracker } from "@tocld/features-finance/ui";
+
+// Invoice management
+<InvoiceForm
+  onSubmit={(data) => createInvoice.mutate(data)}
+  isLoading={createInvoice.isPending}
+/>
+
+// Expense tracking
+<ExpenseForm
+  onSubmit={(data) => createExpense.mutate(data)}
+  isLoading={createExpense.isPending}
+/>
+
+// Time tracking
+<TimeTracker
+  onStart={(data) => startTimer.mutate(data)}
+  onStop={(id) => stopTimer.mutate({ id })}
+  runningTimer={runningTimer}
+  isLoading={isLoading}
+/>
+```
+
+**tRPC Routes:**
+- `invoice.list` - List all invoices with filters
+- `invoice.create` - Create new invoice
+- `invoice.getStats` - Get invoice statistics (total, paid, outstanding)
+- `invoice.delete` - Delete invoice
+- `expense.list` - List all expenses with filters
+- `expense.create` - Create new expense
+- `expense.getStats` - Get expense stats by category
+- `expense.delete` - Delete expense
+- `time.list` - List time entries
+- `time.start` - Start timer for project
+- `time.stop` - Stop running timer
+- `time.getRunning` - Get currently running timer
+- `time.getStats` - Get time stats by project (billable/non-billable hours)
+- `time.delete` - Delete time entry
+
+**Database Schemas:**
+- `invoices.ts` - Invoice records with line items
+- `expenses.ts` - Expense tracking with categories
+- `time-entries.ts` - Time entries with billable hours
+
+**Example Pages:**
+- `/dashboard/invoices` - Full invoice management UI
+- `/dashboard/expenses` - Expense tracking dashboard
+- `/dashboard/time` - Time tracking with stats
+
+---
+
 ### 🔗 OAuth Integrations (`@tocld/features-integrations`)
 
 **What it does:**
@@ -303,6 +378,7 @@ bun run turbo gen feature
 |---------|--------|---------|--------|----|----|
 | **Payments** | ✅ Complete | 1.0.0 | `subscription.*` | ✅ | ✅ |
 | **Integrations** | ✅ Complete | 1.0.0 | `integration.*` | ✅ | ✅ |
+| **Finance** | ✅ Complete | 1.0.0 | `invoice.*`, `expense.*`, `time.*` | ✅ | - |
 | Email | 🚧 Planned | - | - | - | - |
 | Analytics | 🚧 Planned | - | - | - | - |
 | Notifications | 🚧 Planned | - | - | - | - |

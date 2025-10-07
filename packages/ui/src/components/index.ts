@@ -6,8 +6,7 @@
  * Next.js uses the .tsx files
  */
 
-// Import and re-export to ensure proper resolution
-import { Button, type ButtonProps } from "./button";
-import { Input, type InputProps } from "../input";
-
-export { Button, type ButtonProps, Input, type InputProps };
+// Re-export everything from button (Metro will resolve to .native.tsx on React Native)
+export * from "./button";
+// Re-export everything from input (Metro will resolve to .native.tsx on React Native)
+export * from "../input";

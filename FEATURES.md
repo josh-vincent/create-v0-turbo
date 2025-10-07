@@ -18,6 +18,8 @@ Instead of a monolithic codebase where everything is tightly coupled, this templ
 |---------|---------|--------|--------------|
 | **Payments** | `@tocld/features-payments` | ✅ Ready | Stripe/Polar subscriptions, webhooks, billing portal |
 | **Integrations** | `@tocld/features-integrations` | ✅ Ready | Gmail/Outlook OAuth, token management, sync |
+| **Finance** | `@tocld/features-finance` | ✅ Ready | Invoices, expenses, time tracking with stats and reporting |
+| **Voice Chat** | Built-in (ElevenLabs) | ✅ Ready | Conversational AI with voice and text, real-time streaming |
 
 ## 🚀 Quick Start
 
@@ -28,6 +30,10 @@ We've included **fully functional example pages** in the Next.js app:
 - **`/pricing`** - Pricing page with checkout buttons
 - **`/dashboard/billing`** - Subscription management and billing portal
 - **`/dashboard/integrations`** - OAuth integrations dashboard
+- **`/dashboard/invoices`** - Invoice management with create, list, and stats
+- **`/dashboard/expenses`** - Expense tracking by category with receipt uploads
+- **`/dashboard/time`** - Time tracking with billable hours and project stats
+- **`/dashboard/voice-chat`** - AI voice chat with ElevenLabs conversational AI
 
 Visit these pages after starting the dev server to see the features in action!
 
@@ -126,6 +132,157 @@ import { ConnectButton, IntegrationCard } from "@tocld/features-integrations/ui"
 <ConnectButton provider="gmail" />
 <ConnectButton provider="outlook" />
 ```
+
+---
+
+### Using Finance Module (Invoices, Expenses, Time Tracking)
+
+**1. No environment variables needed!** Works in mock mode out of the box.
+
+**2. Invoice Management:**
+
+```tsx
+// apps/nextjs/src/app/dashboard/invoices/page.tsx
+import { InvoiceForm } from "@tocld/features-finance/ui";
+import { useTRPC } from "~/trpc/react";
+import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
+
+export default function InvoicesPage() {
+  const trpc = useTRPC();
+  const queryClient = useQueryClient();
+
+  const { data: invoices } = useQuery(trpc.invoice.list.queryOptions({}));
+  const { data: stats } = useQuery(trpc.invoice.getStats.queryOptions());
+
+  const createMutation = useMutation(trpc.invoice.create.mutationOptions({
+    onSuccess: async () => {
+      await queryClient.invalidateQueries(trpc.invoice.pathFilter());
+    },
+  }));
+
+  return (
+    <div>
+      <h1>Invoices</h1>
+      <InvoiceForm onSubmit={(data) => createMutation.mutate(data)} />
+      {/* Display invoices list and stats */}
+    </div>
+  );
+}
+```
+
+**3. Expense Tracking:**
+
+```tsx
+import { ExpenseForm } from "@tocld/features-finance/ui";
+
+<ExpenseForm
+  onSubmit={(data) => createExpense.mutate(data)}
+  isLoading={createExpense.isPending}
+/>
+```
+
+**4. Time Tracking:**
+
+```tsx
+import { TimeTracker } from "@tocld/features-finance/ui";
+
+<TimeTracker
+  onStart={(data) => startTimer.mutate(data)}
+  onStop={(id) => stopTimer.mutate({ id })}
+  runningTimer={runningTimer}
+  isLoading={isLoading}
+/>
+```
+
+**tRPC Routes:**
+- `invoice.list` - List all invoices
+- `invoice.create` - Create new invoice
+- `invoice.getStats` - Get invoice statistics
+- `invoice.delete` - Delete invoice
+- `expense.list` - List all expenses
+- `expense.create` - Create new expense
+- `expense.getStats` - Get expense stats by category
+- `expense.delete` - Delete expense
+- `time.list` - List time entries
+- `time.start` - Start timer
+- `time.stop` - Stop timer
+- `time.getRunning` - Get currently running timer
+- `time.getStats` - Get time stats by project
+- `time.delete` - Delete time entry
+
+---
+
+### Using Voice Chat (ElevenLabs)
+
+**1. Add environment variable (optional for production):**
+
+```bash
+# .env
+NEXT_PUBLIC_ELEVENLABS_AGENT_ID=your_agent_id
+```
+
+**2. Works without credentials!** Shows setup banner in demo mode.
+
+**3. Use in your app:**
+
+```tsx
+// apps/nextjs/src/app/dashboard/voice-chat/page.tsx
+import { Conversation, ConversationContent, ConversationBar } from "@tocld/ui/conversation";
+import { Orb } from "@tocld/ui/orb";
+import { Message, MessageContent } from "@tocld/ui/message";
+
+export default function VoiceChatPage() {
+  const [messages, setMessages] = useState([]);
+
+  return (
+    <Conversation>
+      <ConversationContent>
+        {messages.map((msg) => (
+          <Message from={msg.role}>
+            <MessageContent>{msg.content}</MessageContent>
+          </Message>
+        ))}
+      </ConversationContent>
+
+      <ConversationBar
+        agentId={process.env.NEXT_PUBLIC_ELEVENLABS_AGENT_ID || "demo-mode"}
+        onMessage={(message) => setMessages(prev => [...prev, message])}
+      />
+    </Conversation>
+  );
+}
+```
+
+**4. Graceful degradation pattern:**
+
+```tsx
+const [showSetupBanner, setShowSetupBanner] = useState(!AGENT_ID);
+
+{showSetupBanner && (
+  <Card className="border-orange-200 bg-gradient-to-r from-orange-50 to-amber-50">
+    <CardContent>
+      <div className="flex items-start justify-between gap-4">
+        <div>
+          <h3>🔶 ElevenLabs Agent Not Configured</h3>
+          <p>Voice chat requires an ElevenLabs Conversational AI agent.</p>
+          <details>
+            <summary>Setup Instructions</summary>
+            {/* Setup steps */}
+          </details>
+        </div>
+        <button onClick={() => setShowSetupBanner(false)}>×</button>
+      </div>
+    </CardContent>
+  </Card>
+)}
+```
+
+**Setup ElevenLabs:**
+1. Create account at [elevenlabs.io](https://elevenlabs.io)
+2. Create a Conversational AI agent
+3. Copy your agent ID
+4. Add to `.env.local`: `NEXT_PUBLIC_ELEVENLABS_AGENT_ID=your_agent_id`
+5. Restart dev server
 
 ---
 

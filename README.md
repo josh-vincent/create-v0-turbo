@@ -52,6 +52,7 @@ All packages use the **`@tocld`** namespace:
 
 - `@tocld/features-payments` - Stripe/Polar payment integration
 - `@tocld/features-integrations` - OAuth integrations (Gmail, Outlook, etc.)
+- `@tocld/features-finance` - Invoices, expenses, and time tracking
 
 ## Modular Database Schemas
 
@@ -62,6 +63,9 @@ All schemas are modular and located in `packages/db/src/schema/`:
 - **tasks.ts** - Example task tracking
 - **payments.ts** - Stripe/Polar subscription tracking
 - **integrations.ts** - OAuth connections (Gmail, Outlook, etc.)
+- **invoices.ts** - Invoice management and tracking
+- **expenses.ts** - Expense tracking by category
+- **time-entries.ts** - Time tracking with billable hours
 
 ## Getting Started
 
@@ -271,6 +275,21 @@ This template now includes **optional feature modules** that can be easily added
 - ✅ tRPC routers: `integration.*`
 - ✅ **Example page:** `/dashboard/integrations`
 
+### 💼 Finance (`@tocld/features-finance`)
+- ✅ Invoice management (create, track, export)
+- ✅ Expense tracking by category with receipts
+- ✅ Time tracking with billable/non-billable hours
+- ✅ UI components (`<InvoiceForm>`, `<ExpenseForm>`, `<TimeTracker>`)
+- ✅ tRPC routers: `invoice.*`, `expense.*`, `time.*`
+- ✅ **Example pages:** `/dashboard/invoices`, `/dashboard/expenses`, `/dashboard/time`
+
+### 🎙️ Voice Chat (ElevenLabs)
+- ✅ Conversational AI with voice and text input
+- ✅ Real-time streaming responses
+- ✅ Graceful degradation without agent configured
+- ✅ UI components (`<Conversation>`, `<ConversationBar>`, `<Orb>`)
+- ✅ **Example page:** `/dashboard/voice-chat`
+
 **Learn more:**
 - [FEATURES.md](./FEATURES.md) - Quick start guide
 - [packages/features/README.md](./packages/features/README.md) - Architecture deep dive
@@ -281,6 +300,8 @@ This template now includes **optional feature modules** that can be easily added
 
 - [x] Add payment integration (Stripe/Polar) ✅
 - [x] Add OAuth provider UI in dashboard ✅
+- [x] Add finance module (invoices, expenses, time tracking) ✅
+- [x] Add voice chat with ElevenLabs ✅
 - [ ] Extend task schema with more fields (due dates, tags, etc.)
 - [ ] Implement team creation and invites
 - [ ] Deploy to Vercel/Expo
