@@ -1,17 +1,17 @@
-import { Separator } from "@/components/ui/separator";
-import { Button } from "@/components/ui/button";
-import { Card } from "@/components/ui/card";
-import { Input } from "@/components/ui/input";
-import { Label } from "@/components/ui/label";
-import { Badge } from "@/components/ui/badge";
-import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
+import { Separator } from "@tocld/ui/separator";
+import { Button } from "@tocld/ui/button";
+import { Card } from "@tocld/ui/card";
+import { Input } from "@tocld/ui/input";
+import { Label } from "@tocld/ui/label";
+import { Badge } from "@tocld/ui/badge";
+import { Avatar, AvatarFallback, AvatarImage } from "@tocld/ui/avatar";
 import { UserPlus, Mail, MoreHorizontal } from "lucide-react";
 import {
   DropdownMenu,
   DropdownMenuContent,
   DropdownMenuItem,
   DropdownMenuTrigger,
-} from "@/components/ui/dropdown-menu";
+} from "@tocld/ui/dropdown-menu";
 
 // Mock team data
 const teamMembers = [

@@ -1,5 +1,5 @@
-import { Button } from "@/components/ui/button";
-import { Card } from "@/components/ui/card";
+import { Button } from "@tocld/ui/button";
+import { Card } from "@tocld/ui/card";
 import {
   ChevronRight,
   Github,
@@ -55,7 +55,7 @@ export default function IntegrationsSection() {
             </p>
           </div>
 
-          <div className="mt-12 grid gap-3 sm:grid-cols-2 lg:grid-cols-3">
+          <div className="mt-12 grid gap-4 md:grid-cols-2 lg:grid-cols-3">
             {INTEGRATIONS.map((integration) => (
               <IntegrationCard
                 key={integration.id}
@@ -90,21 +90,21 @@ const IntegrationCard = ({
           <Icon className={`size-5 ${color}`} />
         </div>
 
-        <div className="space-y-2 py-6">
+        <div className="space-y-2 py-4">
           <h3 className="text-base font-medium">{title}</h3>
-          <p className="text-muted-foreground line-clamp-2 text-sm">{description}</p>
+          <p className="text-sm text-muted-foreground line-clamp-2">{description}</p>
         </div>
 
-        <div className="flex gap-3 border-t border-dashed pt-6">
+        <div className="flex gap-3 border-t border-dashed pt-4">
           <Button
             asChild
             variant="secondary"
             size="sm"
-            className="gap-1 pr-2 shadow-none"
+            className="gap-1 shadow-none"
           >
             <Link href="/dashboard/integrations">
               Connect Now
-              <ChevronRight className="ml-0 !size-3.5 opacity-50" />
+              <ChevronRight className="size-4" />
             </Link>
           </Button>
         </div>

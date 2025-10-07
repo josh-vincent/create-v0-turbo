@@ -10,10 +10,10 @@ import {
   BreadcrumbList,
   BreadcrumbPage,
   BreadcrumbSeparator,
-} from "@/components/ui/breadcrumb"
-import { Button } from "@/components/ui/button"
-import { Separator } from "@/components/ui/separator"
-import { useSidebar } from "@/components/ui/sidebar"
+} from "@tocld/ui/breadcrumb"
+import { Button } from "@tocld/ui/button"
+import { Separator } from "@tocld/ui/separator"
+import { useSidebar } from "@tocld/ui/sidebar"
 
 export function SiteHeader() {
   const { toggleSidebar } = useSidebar()

@@ -1,4 +1,4 @@
-import { Card, CardContent } from '@/components/ui/card'
+import { Card, CardContent } from '@tocld/ui/card'
 import { Blocks, Zap } from 'lucide-react'
 
 export default function FeaturesSection() {

@@ -1,6 +1,6 @@
 import { TRPCError } from "@trpc/server";
 import { z } from "zod";
-import { createTRPCRouter, protectedProcedure } from "@tocld/api/trpc";
+import { createTRPCRouter, protectedProcedure } from "@tocld/api";
 import { timeEntries } from "@tocld/db/schema";
 import { eq, desc, isNull } from "@tocld/db";
 import { createTimeEntrySchema, updateTimeEntrySchema } from "../types";

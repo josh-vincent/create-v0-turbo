@@ -99,6 +99,37 @@ All schemas are in `packages/db/src/schema/`:
 - **payments.ts** - Stripe/Polar subscription tracking
 - **integrations.ts** - OAuth connections
 
+### UI Components (Modular)
+All UI components are centralized in `packages/ui/src/` for reuse across apps.
+
+**ALWAYS use `@tocld/ui` imports:**
+```typescript
+// ✅ Correct - Import from shared package
+import { Button } from "@tocld/ui/button";
+import { Card } from "@tocld/ui/card";
+import { Badge } from "@tocld/ui/badge";
+
+// ❌ Incorrect - Never use app-local imports
+import { Button } from "@/components/ui/button";
+```
+
+**Available Components:**
+- All shadcn/ui components are in `packages/ui/src/`
+- Components are exported via `packages/ui/package.json` exports field
+- Pattern supports cross-platform use (`.tsx` for web, `.native.tsx` for mobile)
+
+**Adding New Components:**
+```bash
+# From project root
+cd packages/ui
+bun ui-add <component-name>
+```
+
+This will:
+1. Install component to `packages/ui/src/`
+2. Auto-add export to `package.json`
+3. Make it available to all apps via `@tocld/ui/<component-name>`
+
 ## Mock Mode System
 
 The project uses a **centralized tRPC mock system** for development without database:

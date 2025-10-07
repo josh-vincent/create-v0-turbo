@@ -26,7 +26,7 @@ import {
   SidebarMenu,
   SidebarMenuButton,
   SidebarMenuItem,
-} from "@/components/ui/sidebar"
+} from "@tocld/ui/sidebar"
 import { LogoIcon } from "@/components/logo"
 
 const data = {

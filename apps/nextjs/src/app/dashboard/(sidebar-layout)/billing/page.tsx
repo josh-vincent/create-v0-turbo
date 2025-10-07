@@ -5,7 +5,7 @@ import { BillingCards } from "~/components/payments/billing-cards";
 
 export default function BillingPage() {
   return (
-    <div className="container mx-auto px-4 py-8 max-w-4xl">
+    <div className="max-w-4xl mx-auto space-y-8">
       {/* Header */}
       <div className="mb-8">
         <h1 className="text-3xl font-bold tracking-tight mb-2">Billing & Subscription</h1>

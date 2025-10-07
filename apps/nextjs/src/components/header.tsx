@@ -1,6 +1,6 @@
 "use client";
 import { Logo } from "@/components/logo";
-import { Button } from "@/components/ui/button";
+import { Button } from "@tocld/ui/button";
 import { cn } from "@/lib/utils";
 import { Menu, X } from "lucide-react";
 import Link from "next/link";

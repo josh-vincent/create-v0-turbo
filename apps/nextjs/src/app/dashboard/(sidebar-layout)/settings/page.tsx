@@ -1,9 +1,9 @@
-import { Separator } from "@/components/ui/separator";
-import { Label } from "@/components/ui/label";
-import { Input } from "@/components/ui/input";
-import { Button } from "@/components/ui/button";
-import { Card } from "@/components/ui/card";
-import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
+import { Separator } from "@tocld/ui/separator";
+import { Label } from "@tocld/ui/label";
+import { Input } from "@tocld/ui/input";
+import { Button } from "@tocld/ui/button";
+import { Card } from "@tocld/ui/card";
+import { Avatar, AvatarFallback, AvatarImage } from "@tocld/ui/avatar";
 import { createClient } from "@tocld/supabase/server";
 import { User } from "lucide-react";
 

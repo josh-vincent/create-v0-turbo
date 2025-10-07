@@ -1,6 +1,6 @@
 import { AnimatedGroup } from "@/components/motion-primitives/animated-group";
 import { TextEffect } from "@/components/motion-primitives/text-effect";
-import { Button } from "@/components/ui/button";
+import { Button } from "@tocld/ui/button";
 import { ArrowRight, ChevronRight } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";

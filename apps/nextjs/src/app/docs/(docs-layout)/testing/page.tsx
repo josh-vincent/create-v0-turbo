@@ -1,7 +1,7 @@
 import { DocsLayout } from "@/components/docs/docs-layout";
 import { CodeBlockCopy } from "@/components/docs/code-block-copy";
-import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
-import { Badge } from "@/components/ui/badge";
+import { Alert, AlertDescription, AlertTitle } from "@tocld/ui/alert";
+import { Badge } from "@tocld/ui/badge";
 import { TestTube, CheckCircle2, XCircle, AlertCircle } from "lucide-react";
 
 export default function TestingPage() {

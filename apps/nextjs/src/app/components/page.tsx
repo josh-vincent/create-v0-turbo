@@ -5,9 +5,9 @@ import { ComponentPreview } from "~/components/component-preview";
 
 export default function ComponentsShowcase() {
   return (
-    <div className="container max-w-6xl py-10">
+    <div className="container mx-auto px-6 py-16 max-w-7xl">
       {/* Header */}
-      <div className="space-y-4 pb-8 border-b border-border">
+      <div className="space-y-4 pb-8 mb-8 border-b border-border">
         <div className="flex items-center justify-between">
           <h1 className="text-4xl font-bold">Universal Components</h1>
           <Link href="/">
@@ -23,7 +23,7 @@ export default function ComponentsShowcase() {
       </div>
 
       {/* Registry Info */}
-      <div className="py-8 space-y-4 border-b border-border bg-gradient-to-r from-primary/5 to-transparent -mx-6 px-6 rounded-lg">
+      <div className="py-8 mb-8 space-y-4 border-b border-border bg-gradient-to-r from-primary/5 to-transparent -mx-6 px-6 rounded-lg">
         <div className="flex items-start gap-4">
           <div className="flex-shrink-0 w-12 h-12 rounded-full bg-primary/10 flex items-center justify-center">
             <svg
@@ -65,8 +65,8 @@ export default function ComponentsShowcase() {
       </div>
 
       {/* Quick Start */}
-      <div className="py-8 space-y-4 border-b border-border">
-        <h2 className="text-2xl font-bold">Quick Start</h2>
+      <div className="py-8 mb-8 space-y-4 border-b border-border">
+        <h2 className="text-2xl font-bold mb-4">Quick Start</h2>
         <div className="grid gap-4 md:grid-cols-2">
           <div className="space-y-2 p-4 rounded-lg border border-border bg-muted/50">
             <h3 className="font-medium">Method 1: Shadcn CLI (Recommended)</h3>
@@ -285,7 +285,7 @@ export function Input({
 
       {/* Registry Endpoints */}
       <div className="py-8 space-y-4 border-t border-border">
-        <h2 className="text-2xl font-bold">Registry Endpoints</h2>
+        <h2 className="text-2xl font-bold mb-4">Registry Endpoints</h2>
         <div className="grid gap-4">
           <div className="p-4 rounded-lg border border-border bg-muted/50">
             <h3 className="font-medium mb-2">Registry Index</h3>

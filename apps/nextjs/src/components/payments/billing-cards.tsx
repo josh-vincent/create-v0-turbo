@@ -1,6 +1,7 @@
 "use client";
 
-import { Card } from "@/components/ui/card";
+import { Badge } from "@tocld/ui/badge";
+import { Card } from "@tocld/ui/card";
 import { CreditCard, DollarSign, ChevronRight, type LucideIcon } from "lucide-react";
 import Link from "next/link";
 import { CheckoutButton } from "./checkout-button";
@@ -59,16 +60,12 @@ export function BillingCards() {
                     <div className="flex items-center justify-center size-10 rounded-lg bg-muted">
                       <provider.icon className={`size-5 ${provider.color}`} />
                     </div>
-                    <div>
+                    <div className="flex flex-col gap-1">
                       <h3 className="text-base font-medium">{provider.title}</h3>
                       {isConfigured ? (
-                        <span className="text-xs px-2 py-0.5 rounded-full bg-green-100 text-green-700 dark:bg-green-900/30 dark:text-green-400">
-                          Available
-                        </span>
+                        <Badge variant="success">Available</Badge>
                       ) : (
-                        <span className="text-xs px-2 py-0.5 rounded-full bg-gray-100 text-gray-600 dark:bg-gray-800 dark:text-gray-400">
-                          Not configured
-                        </span>
+                        <Badge variant="secondary">Not configured</Badge>
                       )}
                     </div>
                   </div>

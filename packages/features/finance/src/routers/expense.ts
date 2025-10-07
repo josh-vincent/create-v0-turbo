@@ -1,6 +1,6 @@
 import { TRPCError } from "@trpc/server";
 import { z } from "zod";
-import { createTRPCRouter, protectedProcedure } from "@tocld/api/trpc";
+import { createTRPCRouter, protectedProcedure } from "@tocld/api";
 import { expenses } from "@tocld/db/schema";
 import { eq, desc } from "@tocld/db";
 import { createExpenseSchema, updateExpenseSchema } from "../types";

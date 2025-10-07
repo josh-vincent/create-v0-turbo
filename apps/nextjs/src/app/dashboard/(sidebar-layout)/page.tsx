@@ -12,9 +12,9 @@ export default async function DashboardPage() {
 
   return (
     <HydrateClient>
-      <div className="flex flex-1 flex-col gap-6">
+      <div className="max-w-4xl mx-auto space-y-8">
         {/* Header */}
-        <div>
+        <div className="mb-8">
           <h1 className="text-3xl font-bold tracking-tight mb-2">Dashboard</h1>
           <p className="text-muted-foreground">
             Welcome back! Here's what's happening today.
@@ -28,14 +28,16 @@ export default async function DashboardPage() {
         </div>
 
         {/* Feature Quick Links */}
-        <div className="grid md:grid-cols-3 gap-4">
+        <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-3 mb-8">
           {/* Tasks - Always available */}
           <Link
             href="/dashboard"
             className="bg-card border rounded-lg p-6 hover:bg-accent transition-colors"
           >
-            <div className="flex items-center gap-3 mb-2">
-              <Settings className="h-5 w-5 text-primary" />
+            <div className="flex items-center gap-3 mb-3">
+              <div className="flex items-center justify-center size-10 rounded-lg bg-muted">
+                <Settings className="size-5 text-primary" />
+              </div>
               <p className="font-semibold">Tasks</p>
             </div>
             <p className="text-sm text-muted-foreground">
@@ -49,8 +51,10 @@ export default async function DashboardPage() {
               href="/dashboard/integrations"
               className="bg-card border rounded-lg p-6 hover:bg-accent transition-colors"
             >
-              <div className="flex items-center gap-3 mb-2">
-                <Zap className="h-5 w-5 text-primary" />
+              <div className="flex items-center gap-3 mb-3">
+                <div className="flex items-center justify-center size-10 rounded-lg bg-muted">
+                  <Zap className="size-5 text-primary" />
+                </div>
                 <p className="font-semibold">Integrations</p>
               </div>
               <p className="text-sm text-muted-foreground">
@@ -59,8 +63,10 @@ export default async function DashboardPage() {
             </Link>
           ) : (
             <div className="bg-card border border-dashed rounded-lg p-6 opacity-50">
-              <div className="flex items-center gap-3 mb-2">
-                <Zap className="h-5 w-5 text-muted-foreground" />
+              <div className="flex items-center gap-3 mb-3">
+                <div className="flex items-center justify-center size-10 rounded-lg bg-muted">
+                  <Zap className="size-5 text-muted-foreground" />
+                </div>
                 <p className="font-semibold text-muted-foreground">
                   Integrations
                 </p>
@@ -77,8 +83,10 @@ export default async function DashboardPage() {
               href="/dashboard/billing"
               className="bg-card border rounded-lg p-6 hover:bg-accent transition-colors"
             >
-              <div className="flex items-center gap-3 mb-2">
-                <CreditCard className="h-5 w-5 text-primary" />
+              <div className="flex items-center gap-3 mb-3">
+                <div className="flex items-center justify-center size-10 rounded-lg bg-muted">
+                  <CreditCard className="size-5 text-primary" />
+                </div>
                 <p className="font-semibold">Billing</p>
               </div>
               <p className="text-sm text-muted-foreground">
@@ -87,8 +95,10 @@ export default async function DashboardPage() {
             </Link>
           ) : (
             <div className="bg-card border border-dashed rounded-lg p-6 opacity-50">
-              <div className="flex items-center gap-3 mb-2">
-                <CreditCard className="h-5 w-5 text-muted-foreground" />
+              <div className="flex items-center gap-3 mb-3">
+                <div className="flex items-center justify-center size-10 rounded-lg bg-muted">
+                  <CreditCard className="size-5 text-muted-foreground" />
+                </div>
                 <p className="font-semibold text-muted-foreground">Billing</p>
               </div>
               <p className="text-sm text-muted-foreground">
@@ -100,7 +110,7 @@ export default async function DashboardPage() {
 
         {/* Tasks Section */}
         <div className="space-y-6">
-          <h2 className="text-xl font-semibold">Your Tasks</h2>
+          <h2 className="text-xl font-semibold mb-4">Your Tasks</h2>
           <CreateTaskForm />
           <TaskList />
         </div>

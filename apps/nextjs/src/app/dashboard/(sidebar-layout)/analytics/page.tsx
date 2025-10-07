@@ -1,7 +1,7 @@
 "use client";
 
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@tocld/ui/card";
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@tocld/ui/tabs";
 import {
   Table,
   TableBody,
@@ -9,16 +9,16 @@ import {
   TableHead,
   TableHeader,
   TableRow,
-} from "@/components/ui/table";
+} from "@tocld/ui/table";
 import {
   ChartConfig,
   ChartContainer,
   ChartTooltip,
   ChartTooltipContent,
-} from "@/components/ui/chart";
+} from "@tocld/ui/chart";
 import { Area, AreaChart, Bar, BarChart, CartesianGrid, Line, LineChart, XAxis, YAxis } from "recharts";
 import { TrendingUp, TrendingDown, DollarSign, Users, Activity, CreditCard } from "lucide-react";
-import { Badge } from "@/components/ui/badge";
+import { Badge } from "@tocld/ui/badge";
 
 // Mock data for charts
 const revenueData = [
