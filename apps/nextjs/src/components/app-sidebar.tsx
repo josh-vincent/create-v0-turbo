@@ -52,6 +52,10 @@ const data = {
           url: "/dashboard",
         },
         {
+          title: "Analytics",
+          url: "/dashboard/analytics",
+        },
+        {
           title: "Integrations",
           url: "/dashboard/integrations",
         },
