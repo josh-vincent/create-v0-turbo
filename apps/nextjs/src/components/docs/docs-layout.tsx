@@ -14,6 +14,7 @@ const docsNav = [
   { title: "Quick Start", href: "/docs/quickstart" },
   { title: "Architecture", href: "/docs/architecture" },
   { title: "Features", href: "/docs/features" },
+  { title: "Blocks", href: "/docs/blocks" },
   { title: "Testing", href: "/docs/testing" },
 ];
 

@@ -133,6 +133,220 @@ NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY=pk_test_...`}
             </Alert>
           </div>
 
+          {/* Finance Feature */}
+          <div className="rounded-lg border bg-card p-6 space-y-4">
+            <div className="flex items-center gap-3">
+              <div className="flex h-10 w-10 items-center justify-center rounded-lg bg-primary/10">
+                <CreditCard className="h-5 w-5 text-primary" />
+              </div>
+              <div>
+                <h3 className="text-lg font-semibold">Finance</h3>
+                <code className="text-xs text-muted-foreground">@tocld/features-finance</code>
+              </div>
+              <Badge className="ml-auto">Ready</Badge>
+            </div>
+
+            <p className="text-sm text-muted-foreground">
+              Complete finance management with invoices, expenses, and time tracking.
+            </p>
+
+            <div className="space-y-2">
+              <h4 className="text-sm font-semibold">What's Included:</h4>
+              <ul className="grid gap-2 sm:grid-cols-2 text-sm text-muted-foreground">
+                <li>• Invoice management</li>
+                <li>• Expense tracking by category</li>
+                <li>• Time tracking with timer</li>
+                <li>• Billable hours calculation</li>
+                <li>• Statistics dashboard</li>
+                <li>• Project-based organization</li>
+              </ul>
+            </div>
+
+            <div className="space-y-2">
+              <h4 className="text-sm font-semibold">Usage Example:</h4>
+              <div className="relative">
+                <div className="absolute right-2 top-2 z-10">
+                  <CodeBlockCopy code={`"use client";
+import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
+import { useTRPC } from "~/trpc/react";
+import { InvoiceForm } from "@tocld/features-finance/ui";
+
+export default function InvoicesPage() {
+  const trpc = useTRPC();
+  const queryClient = useQueryClient();
+
+  const { data: invoices } = useQuery(trpc.invoice.list.queryOptions({}));
+
+  const createMutation = useMutation(trpc.invoice.create.mutationOptions({
+    onSuccess: async () => {
+      await queryClient.invalidateQueries(trpc.invoice.pathFilter());
+    },
+  }));
+
+  return (
+    <div>
+      <InvoiceForm onSubmit={(data) => createMutation.mutate(data)} />
+      <InvoiceList data={invoices} />
+    </div>
+  );
+}`} />
+                </div>
+                <pre className="rounded-lg bg-muted p-4 pr-12">
+                  <code className="text-sm">
+{`"use client";
+import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
+import { useTRPC } from "~/trpc/react";
+import { InvoiceForm } from "@tocld/features-finance/ui";
+
+export default function InvoicesPage() {
+  const trpc = useTRPC();
+  const queryClient = useQueryClient();
+
+  const { data: invoices } = useQuery(trpc.invoice.list.queryOptions({}));
+
+  const createMutation = useMutation(trpc.invoice.create.mutationOptions({
+    onSuccess: async () => {
+      await queryClient.invalidateQueries(trpc.invoice.pathFilter());
+    },
+  }));
+
+  return (
+    <div>
+      <InvoiceForm onSubmit={(data) => createMutation.mutate(data)} />
+      <InvoiceList data={invoices} />
+    </div>
+  );
+}`}
+                  </code>
+                </pre>
+              </div>
+            </div>
+
+            <Alert>
+              <Info className="h-4 w-4" />
+              <AlertTitle>Mock Mode Support</AlertTitle>
+              <AlertDescription>
+                Works without database - returns mock invoices, expenses, and time entries.
+              </AlertDescription>
+            </Alert>
+          </div>
+
+          {/* Voice Chat Feature */}
+          <div className="rounded-lg border bg-card p-6 space-y-4">
+            <div className="flex items-center gap-3">
+              <div className="flex h-10 w-10 items-center justify-center rounded-lg bg-primary/10">
+                <Zap className="h-5 w-5 text-primary" />
+              </div>
+              <div>
+                <h3 className="text-lg font-semibold">Voice Chat</h3>
+                <code className="text-xs text-muted-foreground">@tocld/ui/conversation</code>
+              </div>
+              <Badge className="ml-auto">Ready</Badge>
+            </div>
+
+            <p className="text-sm text-muted-foreground">
+              ElevenLabs conversational AI integration with voice and text input.
+            </p>
+
+            <div className="space-y-2">
+              <h4 className="text-sm font-semibold">What's Included:</h4>
+              <ul className="grid gap-2 sm:grid-cols-2 text-sm text-muted-foreground">
+                <li>• Voice input and output</li>
+                <li>• Text chat interface</li>
+                <li>• Real-time streaming</li>
+                <li>• Conversation history</li>
+                <li>• Visual orb animation</li>
+                <li>• Demo mode (no API key)</li>
+              </ul>
+            </div>
+
+            <div className="space-y-2">
+              <h4 className="text-sm font-semibold">Usage Example:</h4>
+              <div className="relative">
+                <div className="absolute right-2 top-2 z-10">
+                  <CodeBlockCopy code={`"use client";
+import { useState } from "react";
+import { Conversation, ConversationBar } from "@tocld/ui/conversation";
+import { Orb } from "@tocld/ui/orb";
+import { Message } from "@tocld/ui/message";
+
+export default function VoiceChatPage() {
+  const [messages, setMessages] = useState([]);
+
+  return (
+    <Conversation>
+      <ConversationContent>
+        {messages.map((msg) => (
+          <Message key={msg.id} from={msg.role}>
+            {msg.content}
+          </Message>
+        ))}
+      </ConversationContent>
+      <ConversationBar
+        agentId={process.env.NEXT_PUBLIC_ELEVENLABS_AGENT_ID}
+        onMessage={(msg) => setMessages([...messages, msg])}
+      />
+    </Conversation>
+  );
+}`} />
+                </div>
+                <pre className="rounded-lg bg-muted p-4 pr-12">
+                  <code className="text-sm">
+{`"use client";
+import { useState } from "react";
+import { Conversation, ConversationBar } from "@tocld/ui/conversation";
+import { Orb } from "@tocld/ui/orb";
+import { Message } from "@tocld/ui/message";
+
+export default function VoiceChatPage() {
+  const [messages, setMessages] = useState([]);
+
+  return (
+    <Conversation>
+      <ConversationContent>
+        {messages.map((msg) => (
+          <Message key={msg.id} from={msg.role}>
+            {msg.content}
+          </Message>
+        ))}
+      </ConversationContent>
+      <ConversationBar
+        agentId={process.env.NEXT_PUBLIC_ELEVENLABS_AGENT_ID}
+        onMessage={(msg) => setMessages([...messages, msg])}
+      />
+    </Conversation>
+  );
+}`}
+                  </code>
+                </pre>
+              </div>
+            </div>
+
+            <div className="space-y-2">
+              <h4 className="text-sm font-semibold">Environment Variables:</h4>
+              <div className="relative">
+                <div className="absolute right-2 top-2 z-10">
+                  <CodeBlockCopy code={`# Optional - works in demo mode without this
+NEXT_PUBLIC_ELEVENLABS_AGENT_ID=your-agent-id`} />
+                </div>
+                <pre className="rounded-lg bg-muted p-3 pr-12 text-xs">
+                  <code>
+{`# Optional - works in demo mode without this
+NEXT_PUBLIC_ELEVENLABS_AGENT_ID=your-agent-id`}
+                  </code>
+                </pre>
+              </div>
+            </div>
+
+            <Alert>
+              <Info className="h-4 w-4" />
+              <AlertTitle>Graceful Degradation</AlertTitle>
+              <AlertDescription>
+                Works in demo mode without ElevenLabs credentials. Shows setup banner when not configured.
+              </AlertDescription>
+            </Alert>
+          </div>
+
           {/* Integrations Feature */}
           <div className="rounded-lg border bg-card p-6 space-y-4">
             <div className="flex items-center gap-3">
@@ -402,7 +616,7 @@ return ctx.db.query.subscriptions.findFirst(...);`}
         {/* Example Pages */}
         <section className="space-y-4 border-t pt-8">
           <h2 className="text-2xl font-bold">Example Pages</h2>
-          <div className="grid gap-4 sm:grid-cols-2">
+          <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
             <a href="/pricing" className="block rounded-lg border bg-card p-4 transition-colors hover:bg-accent">
               <Badge className="mb-2">Payments</Badge>
               <h3 className="mb-1 font-semibold">Pricing Page →</h3>
@@ -413,10 +627,35 @@ return ctx.db.query.subscriptions.findFirst(...);`}
               <h3 className="mb-1 font-semibold">Billing →</h3>
               <p className="text-sm text-muted-foreground">Subscription management</p>
             </a>
+            <a href="/dashboard/invoices" className="block rounded-lg border bg-card p-4 transition-colors hover:bg-accent">
+              <Badge className="mb-2">Finance</Badge>
+              <h3 className="mb-1 font-semibold">Invoices →</h3>
+              <p className="text-sm text-muted-foreground">Invoice management</p>
+            </a>
+            <a href="/dashboard/expenses" className="block rounded-lg border bg-card p-4 transition-colors hover:bg-accent">
+              <Badge className="mb-2">Finance</Badge>
+              <h3 className="mb-1 font-semibold">Expenses →</h3>
+              <p className="text-sm text-muted-foreground">Expense tracking</p>
+            </a>
+            <a href="/dashboard/time" className="block rounded-lg border bg-card p-4 transition-colors hover:bg-accent">
+              <Badge className="mb-2">Finance</Badge>
+              <h3 className="mb-1 font-semibold">Time Tracking →</h3>
+              <p className="text-sm text-muted-foreground">Billable hours timer</p>
+            </a>
+            <a href="/dashboard/voice-chat" className="block rounded-lg border bg-card p-4 transition-colors hover:bg-accent">
+              <Badge className="mb-2">AI</Badge>
+              <h3 className="mb-1 font-semibold">Voice Chat →</h3>
+              <p className="text-sm text-muted-foreground">ElevenLabs AI conversation</p>
+            </a>
             <a href="/dashboard/integrations" className="block rounded-lg border bg-card p-4 transition-colors hover:bg-accent">
               <Badge className="mb-2">Integrations</Badge>
               <h3 className="mb-1 font-semibold">Integrations →</h3>
               <p className="text-sm text-muted-foreground">OAuth connections</p>
+            </a>
+            <a href="/docs/blocks" className="block rounded-lg border bg-card p-4 transition-colors hover:bg-accent">
+              <Badge className="mb-2">Blocks</Badge>
+              <h3 className="mb-1 font-semibold">Feature Blocks →</h3>
+              <p className="text-sm text-muted-foreground">Copy-paste ready components</p>
             </a>
             <a href="/docs/testing" className="block rounded-lg border bg-card p-4 transition-colors hover:bg-accent">
               <Badge className="mb-2">Testing</Badge>
