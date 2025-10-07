@@ -17,6 +17,17 @@ import {
   Server,
   Smartphone
 } from "lucide-react";
+import { BlockPreview } from "./_components/block-preview";
+import {
+  DashboardBlockExample,
+  AnalyticsBlockExample,
+  InvoiceBlockExample,
+  ExpenseBlockExample,
+  TimeTrackingBlockExample,
+  VoiceChatBlockExample,
+  IntegrationsBlockExample,
+  BillingBlockExample
+} from "./_components/ui-examples";
 
 export default function BlocksPage() {
   return (
@@ -77,12 +88,20 @@ export default function BlocksPage() {
                 <span>Server-side rendering with tRPC</span>
               </div>
 
-              <Tabs defaultValue="server">
-                <TabsList className="grid w-full grid-cols-3">
+              <Tabs defaultValue="preview">
+                <TabsList className="grid w-full grid-cols-4">
+                  <TabsTrigger value="preview">Preview</TabsTrigger>
                   <TabsTrigger value="server">Server Side</TabsTrigger>
                   <TabsTrigger value="client">Client Side</TabsTrigger>
                   <TabsTrigger value="ui">UI Components</TabsTrigger>
                 </TabsList>
+
+                <TabsContent value="preview" className="space-y-3">
+                  <p className="text-sm text-muted-foreground">Live example of the dashboard block:</p>
+                  <BlockPreview>
+                    <DashboardBlockExample />
+                  </BlockPreview>
+                </TabsContent>
 
                 <TabsContent value="server" className="space-y-3">
                   <p className="text-sm text-muted-foreground">Server component with async data fetching:</p>
@@ -237,11 +256,19 @@ import { Badge } from "@tocld/ui/badge";
               </div>
             </CardHeader>
             <CardContent className="space-y-4">
-              <Tabs defaultValue="server">
-                <TabsList className="grid w-full grid-cols-2">
+              <Tabs defaultValue="preview">
+                <TabsList className="grid w-full grid-cols-3">
+                  <TabsTrigger value="preview">Preview</TabsTrigger>
                   <TabsTrigger value="server">Server Side</TabsTrigger>
                   <TabsTrigger value="ui">Charts & UI</TabsTrigger>
                 </TabsList>
+
+                <TabsContent value="preview" className="space-y-3">
+                  <p className="text-sm text-muted-foreground">Live example of the analytics block:</p>
+                  <BlockPreview>
+                    <AnalyticsBlockExample />
+                  </BlockPreview>
+                </TabsContent>
 
                 <TabsContent value="server" className="space-y-3">
                   <div className="relative">
@@ -321,12 +348,20 @@ import { AreaChart, Area, BarChart, Bar } from "recharts";
               </div>
             </CardHeader>
             <CardContent className="space-y-4">
-              <Tabs defaultValue="client">
-                <TabsList className="grid w-full grid-cols-3">
+              <Tabs defaultValue="preview">
+                <TabsList className="grid w-full grid-cols-4">
+                  <TabsTrigger value="preview">Preview</TabsTrigger>
                   <TabsTrigger value="client">Client Side</TabsTrigger>
                   <TabsTrigger value="router">tRPC Router</TabsTrigger>
                   <TabsTrigger value="ui">UI Components</TabsTrigger>
                 </TabsList>
+
+                <TabsContent value="preview" className="space-y-3">
+                  <p className="text-sm text-muted-foreground">Live example of the invoice block:</p>
+                  <BlockPreview>
+                    <InvoiceBlockExample />
+                  </BlockPreview>
+                </TabsContent>
 
                 <TabsContent value="client" className="space-y-3">
                   <div className="relative">
@@ -520,6 +555,9 @@ import { Badge } from "@tocld/ui/badge";
               </div>
             </CardHeader>
             <CardContent className="space-y-4">
+              <BlockPreview>
+                <ExpenseBlockExample />
+              </BlockPreview>
               <p className="text-sm text-muted-foreground">
                 Track expenses with category breakdown, stats, and filtering.
               </p>
@@ -550,6 +588,9 @@ import { Badge } from "@tocld/ui/badge";
               </div>
             </CardHeader>
             <CardContent className="space-y-4">
+              <BlockPreview>
+                <TimeTrackingBlockExample />
+              </BlockPreview>
               <p className="text-sm text-muted-foreground">
                 Start/stop timer, track billable vs non-billable hours, and organize by project.
               </p>
@@ -580,11 +621,19 @@ import { Badge } from "@tocld/ui/badge";
               </div>
             </CardHeader>
             <CardContent className="space-y-4">
-              <Tabs defaultValue="client">
-                <TabsList className="grid w-full grid-cols-2">
+              <Tabs defaultValue="preview">
+                <TabsList className="grid w-full grid-cols-3">
+                  <TabsTrigger value="preview">Preview</TabsTrigger>
                   <TabsTrigger value="client">Client Side</TabsTrigger>
                   <TabsTrigger value="ui">UI Components</TabsTrigger>
                 </TabsList>
+
+                <TabsContent value="preview" className="space-y-3">
+                  <p className="text-sm text-muted-foreground">Live example of the voice chat block:</p>
+                  <BlockPreview>
+                    <VoiceChatBlockExample />
+                  </BlockPreview>
+                </TabsContent>
 
                 <TabsContent value="client" className="space-y-3">
                   <div className="relative">
@@ -704,6 +753,9 @@ import { Message, MessageContent } from "@tocld/ui/message";
               </div>
             </CardHeader>
             <CardContent className="space-y-4">
+              <BlockPreview>
+                <IntegrationsBlockExample />
+              </BlockPreview>
               <div className="relative">
                 <div className="absolute right-2 top-2 z-10">
                   <CodeBlockCopy code={`import { IntegrationsList, ConnectButton } from "@tocld/features-integrations/ui";
@@ -748,6 +800,9 @@ import { Message, MessageContent } from "@tocld/ui/message";
               </div>
             </CardHeader>
             <CardContent className="space-y-4">
+              <BlockPreview>
+                <BillingBlockExample />
+              </BlockPreview>
               <div className="relative">
                 <div className="absolute right-2 top-2 z-10">
                   <CodeBlockCopy code={`import { SubscriptionCard } from "@tocld/features-payments/ui";
