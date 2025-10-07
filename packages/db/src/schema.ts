@@ -4,3 +4,6 @@ export * from "./schema/teams";
 export * from "./schema/tasks";
 export * from "./schema/payments";
 export * from "./schema/integrations";
+export * from "./schema/invoices";
+export * from "./schema/expenses";
+export * from "./schema/time-entries";

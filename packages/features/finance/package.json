@@ -1,0 +1,27 @@
+{
+  "name": "@tocld/features-finance",
+  "version": "1.0.0",
+  "private": true,
+  "type": "module",
+  "exports": {
+    "./routers": "./src/routers/index.ts",
+    "./ui": "./src/ui/index.ts",
+    "./types": "./src/types.ts"
+  },
+  "scripts": {
+    "clean": "git clean -xdf .turbo node_modules",
+    "format": "biome check .",
+    "lint": "biome check .",
+    "typecheck": "tsc --noEmit"
+  },
+  "dependencies": {
+    "@tocld/db": "workspace:*",
+    "@tocld/validators": "workspace:*",
+    "@trpc/server": "^11.5.1",
+    "zod": "^3.24.1"
+  },
+  "devDependencies": {
+    "@tocld/tsconfig": "workspace:*",
+    "typescript": "^5.9.2"
+  }
+}
