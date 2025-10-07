@@ -5,6 +5,9 @@ import { createTRPCRouter } from "./trpc";
 // Feature modules (optional - only imported if packages are installed)
 let subscriptionRouter: any;
 let integrationRouter: any;
+let invoiceRouter: any;
+let expenseRouter: any;
+let timeRouter: any;
 
 try {
   const paymentsModule = require("@tocld/features-payments/routers");
@@ -20,12 +23,24 @@ try {
   // Integration features not installed
 }
 
+try {
+  const financeModule = require("@tocld/features-finance/routers");
+  invoiceRouter = financeModule.invoiceRouter;
+  expenseRouter = financeModule.expenseRouter;
+  timeRouter = financeModule.timeRouter;
+} catch {
+  // Finance features not installed
+}
+
 export const appRouter = createTRPCRouter({
   auth: authRouter,
   task: taskRouter,
   // Conditionally add feature routers if packages are installed
   ...(subscriptionRouter ? { subscription: subscriptionRouter } : {}),
   ...(integrationRouter ? { integration: integrationRouter } : {}),
+  ...(invoiceRouter ? { invoice: invoiceRouter } : {}),
+  ...(expenseRouter ? { expense: expenseRouter } : {}),
+  ...(timeRouter ? { time: timeRouter } : {}),
 });
 
 // export type definition of API

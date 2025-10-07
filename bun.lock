@@ -74,6 +74,7 @@
         "@radix-ui/react-dialog": "^1.1.15",
         "@radix-ui/react-dropdown-menu": "^2.1.16",
         "@radix-ui/react-label": "^2.1.7",
+        "@radix-ui/react-select": "^2.2.6",
         "@radix-ui/react-separator": "^1.1.7",
         "@radix-ui/react-slot": "^1.2.3",
         "@radix-ui/react-tabs": "^1.1.13",
@@ -145,6 +146,20 @@
         "@tocld/tsconfig": "workspace:*",
         "dotenv-cli": "^10.0.0",
         "drizzle-kit": "^0.31.4",
+        "typescript": "^5.9.2",
+      },
+    },
+    "packages/features/finance": {
+      "name": "@tocld/features-finance",
+      "version": "1.0.0",
+      "dependencies": {
+        "@tocld/db": "workspace:*",
+        "@tocld/validators": "workspace:*",
+        "@trpc/server": "^11.5.1",
+        "zod": "^3.24.1",
+      },
+      "devDependencies": {
+        "@tocld/tsconfig": "workspace:*",
         "typescript": "^5.9.2",
       },
     },
@@ -1030,6 +1045,8 @@
     "@tocld/db": ["@tocld/db@workspace:packages/db"],
 
     "@tocld/expo": ["@tocld/expo@workspace:apps/expo"],
+
+    "@tocld/features-finance": ["@tocld/features-finance@workspace:packages/features/finance"],
 
     "@tocld/features-integrations": ["@tocld/features-integrations@workspace:packages/features/integrations"],
 
@@ -2646,6 +2663,8 @@
     "@react-navigation/core/react-is": ["react-is@19.2.0", "", {}, "sha512-x3Ax3kNSMIIkyVYhWPyO09bu0uttcAIoecO/um/rKGQ4EltYWVYtyiGkS/3xMynrbVQdS69Jhlv8FXUEZehlzA=="],
 
     "@supabase/realtime-js/ws": ["ws@8.18.3", "", { "peerDependencies": { "bufferutil": "^4.0.1", "utf-8-validate": ">=5.0.2" }, "optionalPeers": ["bufferutil", "utf-8-validate"] }, "sha512-PEIGCY5tSlUt50cqyMXfCzX+oOPqN0vuGqWzbcJ2xvnkzkq46oOpz7dQaTDBdfICb4N14+GARUDw2XV2N4tvzg=="],
+
+    "@tocld/features-finance/zod": ["zod@3.25.76", "", {}, "sha512-gzUt/qt81nXsFGKIFcC3YnfEAx5NkunCfnDlvuBSSFS02bcXu4Lmea0AFIUwbLWxWPx3d9p8S5QoaujKcNQxcQ=="],
 
     "@tocld/nextjs/@types/react": ["@types/react@19.2.1", "", { "dependencies": { "csstype": "^3.0.2" } }, "sha512-1U5NQWh/GylZQ50ZMnnPjkYHEaGhg6t5i/KI0LDDh3t4E3h3T3vzm+GLY2BRzMfIjSBwzm6tginoZl5z0O/qsA=="],
 

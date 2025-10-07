@@ -18,7 +18,10 @@
     "@tocld/db": "workspace:*",
     "@tocld/validators": "workspace:*",
     "@trpc/server": "^11.5.1",
-    "zod": "^3.24.1"
+    "zod": "^3.24.1",
+    "react": "^19.0.0",
+    "react-hook-form": "^7.54.2",
+    "@hookform/resolvers": "^3.9.1"
   },
   "devDependencies": {
     "@tocld/tsconfig": "workspace:*",

@@ -56,6 +56,18 @@ const data = {
           url: "/dashboard/analytics",
         },
         {
+          title: "Invoices",
+          url: "/dashboard/invoices",
+        },
+        {
+          title: "Expenses",
+          url: "/dashboard/expenses",
+        },
+        {
+          title: "Time Tracking",
+          url: "/dashboard/time",
+        },
+        {
           title: "Integrations",
           url: "/dashboard/integrations",
         },
