@@ -1,0 +1,27 @@
+{
+  "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+  "name": "checkout-button",
+  "type": "registry:ui",
+  "title": "Checkout Button",
+  "description": "Universal checkout button for Stripe/Polar payments. Handles checkout session creation and redirect.",
+  "dependencies": ["class-variance-authority"],
+  "registryDependencies": [],
+  "files": [
+    {
+      "path": "registry/new-york/ui/checkout-button/checkout-button.ts",
+      "content": "import { cva, type VariantProps } from \"class-variance-authority\";\n\n/**\n * Checkout button variants (shared across platforms)\n */\nexport const checkoutButtonVariants = cva(\n  \"inline-flex items-center justify-center rounded-lg font-semibold transition-colors focus-visible:outline-none focus-visible:ring-2 disabled:pointer-events-none disabled:opacity-50\",\n  {\n    variants: {\n      variant: {\n        default: \"bg-primary text-primary-foreground hover:bg-primary/90\",\n        outline: \"border border-input bg-background hover:bg-accent hover:text-accent-foreground\",\n        ghost: \"hover:bg-accent hover:text-accent-foreground\",\n      },\n      size: {\n        sm: \"h-9 px-4 text-sm\",\n        md: \"h-11 px-6 text-base\",\n        lg: \"h-13 px-8 text-lg\",\n      },\n    },\n    defaultVariants: {\n      variant: \"default\",\n      size: \"md\",\n    },\n  },\n);\n\nexport type CheckoutButtonVariants = VariantProps<typeof checkoutButtonVariants>;\n\nexport interface CheckoutButtonProps extends CheckoutButtonVariants {\n  priceId: string;\n  successUrl?: string;\n  cancelUrl?: string;\n  children?: React.ReactNode;\n  disabled?: boolean;\n  onSuccess?: (sessionId: string) => void;\n  onError?: (error: Error) => void;\n}\n",
+      "type": "registry:lib"
+    },
+    {
+      "path": "registry/new-york/ui/checkout-button/checkout-button.tsx",
+      "content": "\"use client\";\n\nimport * as React from \"react\";\nimport { api } from \"@tocld/api/client\";\nimport { cn } from \"@tocld/ui/lib\";\nimport { checkoutButtonVariants, type CheckoutButtonProps } from \"./checkout-button\";\n\n/**\n * Web version of CheckoutButton (uses Stripe/Polar checkout)\n */\nexport function CheckoutButton({\n  priceId,\n  successUrl,\n  cancelUrl,\n  children = \"Subscribe\",\n  variant,\n  size,\n  disabled,\n  onSuccess,\n  onError,\n}: CheckoutButtonProps) {\n  const [isLoading, setIsLoading] = React.useState(false);\n  const createCheckout = api.subscription.createCheckout.useMutation();\n\n  const handleClick = async () => {\n    setIsLoading(true);\n\n    try {\n      const result = await createCheckout.mutateAsync({\n        priceId,\n        successUrl: successUrl || `${window.location.origin}/dashboard?success=true`,\n        cancelUrl: cancelUrl || `${window.location.origin}/pricing`,\n      });\n\n      onSuccess?.(result.sessionId);\n\n      // Redirect to checkout\n      window.location.href = result.url;\n    } catch (error) {\n      console.error(\"Checkout error:\", error);\n      onError?.(error as Error);\n      setIsLoading(false);\n    }\n  };\n\n  return (\n    <button\n      type=\"button\"\n      className={cn(checkoutButtonVariants({ variant, size }))}\n      onClick={handleClick}\n      disabled={disabled || isLoading}\n    >\n      {isLoading ? \"Loading...\" : children}\n    </button>\n  );\n}\n",
+      "type": "registry:ui"
+    },
+    {
+      "path": "registry/new-york/ui/checkout-button/checkout-button.native.tsx",
+      "content": "import * as React from \"react\";\nimport { ActivityIndicator, Pressable, Text } from \"react-native\";\nimport { api } from \"@tocld/api/native\";\nimport { checkoutButtonVariants, type CheckoutButtonProps } from \"./checkout-button\";\n\n/**\n * Native version of CheckoutButton (opens in-app browser)\n */\nexport function CheckoutButton({\n  priceId,\n  successUrl,\n  cancelUrl,\n  children = \"Subscribe\",\n  variant,\n  size,\n  disabled,\n  onSuccess,\n  onError,\n}: CheckoutButtonProps) {\n  const [isLoading, setIsLoading] = React.useState(false);\n  const createCheckout = api.subscription.createCheckout.useMutation();\n\n  const handlePress = async () => {\n    setIsLoading(true);\n\n    try {\n      const result = await createCheckout.mutateAsync({\n        priceId,\n        successUrl: successUrl || \"myapp://dashboard?success=true\",\n        cancelUrl: cancelUrl || \"myapp://pricing\",\n      });\n\n      onSuccess?.(result.sessionId);\n\n      // Open checkout URL in in-app browser (WebBrowser from expo)\n      // You would import { WebBrowser } from 'expo-web-browser';\n      // await WebBrowser.openBrowserAsync(result.url);\n      console.log(\"Open checkout:\", result.url);\n    } catch (error) {\n      console.error(\"Checkout error:\", error);\n      onError?.(error as Error);\n    } finally {\n      setIsLoading(false);\n    }\n  };\n\n  const buttonClass = checkoutButtonVariants({ variant, size });\n\n  return (\n    <Pressable\n      onPress={handlePress}\n      disabled={disabled || isLoading}\n      className={buttonClass}\n    >\n      {isLoading ? (\n        <ActivityIndicator color=\"#fff\" />\n      ) : (\n        <Text className=\"text-primary-foreground font-semibold\">\n          {children}\n        </Text>\n      )}\n    </Pressable>\n  );\n}\n",
+      "type": "registry:ui"
+    }
+  ],
+  "categories": ["payment"]
+}

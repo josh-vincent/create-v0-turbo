@@ -1,9 +1,10 @@
-import type { NextRequest } from "next/server";
 import { fetchRequestHandler } from "@trpc/server/adapters/fetch";
+import type { NextRequest } from "next/server";
 
-import { appRouter, createTRPCContext } from "@acme/api";
+import { type Session, appRouter, createTRPCContext } from "@tocld/api";
+import { createClient } from "@tocld/supabase/server";
 
-import { auth } from "~/auth/server";
+import { authConfig } from "~/lib/auth-config";
 
 /**
  * Configure basic CORS headers
@@ -25,14 +26,36 @@ export const OPTIONS = () => {
 };
 
 const handler = async (req: NextRequest) => {
+  let mappedSession: Session | null = null;
+
+  if (authConfig.isMockMode) {
+    // Provide mock session for development
+    mappedSession = authConfig.mockSession;
+  } else {
+    const supabase = await createClient();
+    const {
+      data: { session },
+    } = await supabase.auth.getSession();
+
+    // Map Supabase session to our Session type
+    mappedSession = session
+      ? {
+          user: {
+            id: session.user.id,
+            email: session.user.email,
+          },
+        }
+      : null;
+  }
+
   const response = await fetchRequestHandler({
     endpoint: "/api/trpc",
     router: appRouter,
     req,
     createContext: () =>
       createTRPCContext({
-        auth: auth,
         headers: req.headers,
+        session: mappedSession,
       }),
     onError({ error, path }) {
       console.error(`>>> tRPC Error on '${path}'`, error);

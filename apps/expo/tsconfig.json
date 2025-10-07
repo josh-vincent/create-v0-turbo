@@ -1,5 +1,5 @@
 {
-  "extends": ["@acme/tsconfig/base.json"],
+  "extends": ["@tocld/tsconfig/base.json"],
   "compilerOptions": {
     "jsx": "react-native",
     "checkJs": false,
@@ -8,13 +8,6 @@
       "~/*": ["./src/*"]
     }
   },
-  "include": [
-    "src",
-    "*.ts",
-    "*.js",
-    ".expo/types/**/*.ts",
-    "expo-env.d.ts",
-    "nativewind-env.d.ts"
-  ],
+  "include": ["src", "*.ts", "*.js", ".expo/types/**/*.ts", "expo-env.d.ts", "nativewind-env.d.ts"],
   "exclude": ["node_modules"]
 }

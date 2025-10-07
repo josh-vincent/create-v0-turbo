@@ -1,0 +1,59 @@
+{
+  "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+  "name": "primitives",
+  "type": "registry:lib",
+  "title": "Universal Primitives",
+  "description": "Cross-platform primitive components for building universal UIs.",
+  "files": [
+    {
+      "path": "registry/new-york/ui/primitives/types.ts",
+      "content": "/**\n * Shared types for universal primitives\n * These types work across web and native platforms\n */\n\nexport interface UniversalViewProps {\n  className?: string;\n  children?: React.ReactNode;\n  style?: any;\n  accessibilityRole?: string;\n  accessibilityLabel?: string;\n  testID?: string;\n}\n\nexport interface UniversalTextProps {\n  className?: string;\n  children?: React.ReactNode;\n  style?: any;\n  accessibilityRole?: string;\n  accessibilityLabel?: string;\n  testID?: string;\n}\n\nexport interface UniversalPressableProps {\n  className?: string;\n  children?: React.ReactNode;\n  onPress?: () => void;\n  disabled?: boolean;\n  style?: any;\n  accessibilityRole?: string;\n  accessibilityLabel?: string;\n  accessibilityState?: { disabled?: boolean };\n  testID?: string;\n}\n\nexport interface UniversalTextInputProps {\n  className?: string;\n  value?: string;\n  onChangeText?: (text: string) => void;\n  placeholder?: string;\n  placeholderClassName?: string;\n  secureTextEntry?: boolean;\n  editable?: boolean;\n  style?: any;\n  accessibilityLabel?: string;\n  testID?: string;\n}\n",
+      "type": "registry:lib"
+    },
+    {
+      "path": "registry/new-york/ui/primitives/view.tsx",
+      "content": "/**\n * Universal View primitive (Web version)\n * Uses standard div element for web\n */\nimport * as React from \"react\";\nimport type { UniversalViewProps } from \"./types\";\nimport { cn } from \"@tocld/ui\";\n\nexport function View({\n  className,\n  children,\n  style,\n  accessibilityRole,\n  accessibilityLabel,\n  testID,\n  ...props\n}: UniversalViewProps) {\n  return (\n    <div\n      className={cn(className)}\n      style={style}\n      role={accessibilityRole}\n      aria-label={accessibilityLabel}\n      data-testid={testID}\n      {...props}\n    >\n      {children}\n    </div>\n  );\n}\n",
+      "type": "registry:ui"
+    },
+    {
+      "path": "registry/new-york/ui/primitives/view.native.tsx",
+      "content": "/**\n * Universal View primitive (Native version)\n * Uses React Native View with NativeWind support\n */\nimport * as React from \"react\";\nimport { View as RNView } from \"react-native\";\nimport type { UniversalViewProps } from \"./types\";\n\nexport function View({\n  className,\n  children,\n  style,\n  accessibilityRole,\n  accessibilityLabel,\n  testID,\n  ...props\n}: UniversalViewProps) {\n  return (\n    <RNView\n      className={className}\n      style={style}\n      accessibilityRole={accessibilityRole}\n      accessibilityLabel={accessibilityLabel}\n      testID={testID}\n      {...props}\n    >\n      {children}\n    </RNView>\n  );\n}\n",
+      "type": "registry:ui"
+    },
+    {
+      "path": "registry/new-york/ui/primitives/text.tsx",
+      "content": "/**\n * Universal Text primitive (Web version)\n * Uses standard span element for web\n */\nimport * as React from \"react\";\nimport type { UniversalTextProps } from \"./types\";\nimport { cn } from \"@tocld/ui\";\n\nexport function Text({\n  className,\n  children,\n  style,\n  accessibilityRole,\n  accessibilityLabel,\n  testID,\n  ...props\n}: UniversalTextProps) {\n  return (\n    <span\n      className={cn(className)}\n      style={style}\n      role={accessibilityRole}\n      aria-label={accessibilityLabel}\n      data-testid={testID}\n      {...props}\n    >\n      {children}\n    </span>\n  );\n}\n",
+      "type": "registry:ui"
+    },
+    {
+      "path": "registry/new-york/ui/primitives/text.native.tsx",
+      "content": "/**\n * Universal Text primitive (Native version)\n * Uses React Native Text with NativeWind support\n */\nimport * as React from \"react\";\nimport { Text as RNText } from \"react-native\";\nimport type { UniversalTextProps } from \"./types\";\n\nexport function Text({\n  className,\n  children,\n  style,\n  accessibilityRole,\n  accessibilityLabel,\n  testID,\n  ...props\n}: UniversalTextProps) {\n  return (\n    <RNText\n      className={className}\n      style={style}\n      accessibilityRole={accessibilityRole}\n      accessibilityLabel={accessibilityLabel}\n      testID={testID}\n      {...props}\n    >\n      {children}\n    </RNText>\n  );\n}\n",
+      "type": "registry:ui"
+    },
+    {
+      "path": "registry/new-york/ui/primitives/pressable.tsx",
+      "content": "/**\n * Universal Pressable primitive (Web version)\n * Uses button element for web with proper accessibility\n */\nimport * as React from \"react\";\nimport type { UniversalPressableProps } from \"./types\";\nimport { cn } from \"@tocld/ui\";\n\nexport function Pressable({\n  className,\n  children,\n  onPress,\n  disabled,\n  style,\n  accessibilityRole = \"button\",\n  accessibilityLabel,\n  accessibilityState,\n  testID,\n  ...props\n}: UniversalPressableProps) {\n  return (\n    <button\n      type=\"button\"\n      className={cn(className)}\n      onClick={onPress}\n      disabled={disabled}\n      style={style}\n      role={accessibilityRole}\n      aria-label={accessibilityLabel}\n      aria-disabled={accessibilityState?.disabled ?? disabled}\n      data-testid={testID}\n      {...props}\n    >\n      {children}\n    </button>\n  );\n}\n",
+      "type": "registry:ui"
+    },
+    {
+      "path": "registry/new-york/ui/primitives/pressable.native.tsx",
+      "content": "/**\n * Universal Pressable primitive (Native version)\n * Uses React Native Pressable with NativeWind support\n */\nimport * as React from \"react\";\nimport { Pressable as RNPressable } from \"react-native\";\nimport type { UniversalPressableProps } from \"./types\";\n\nexport function Pressable({\n  className,\n  children,\n  onPress,\n  disabled,\n  style,\n  accessibilityRole,\n  accessibilityLabel,\n  accessibilityState,\n  testID,\n  ...props\n}: UniversalPressableProps) {\n  return (\n    <RNPressable\n      className={className}\n      onPress={onPress}\n      disabled={disabled}\n      style={style}\n      accessibilityRole={accessibilityRole}\n      accessibilityLabel={accessibilityLabel}\n      accessibilityState={accessibilityState}\n      testID={testID}\n      {...props}\n    >\n      {children}\n    </RNPressable>\n  );\n}\n",
+      "type": "registry:ui"
+    },
+    {
+      "path": "registry/new-york/ui/primitives/text-input.tsx",
+      "content": "/**\n * Universal TextInput primitive (Web version)\n * Uses standard input element for web\n */\nimport * as React from \"react\";\nimport type { UniversalTextInputProps } from \"./types\";\nimport { cn } from \"@tocld/ui\";\n\nexport function TextInput({\n  className,\n  value,\n  onChangeText,\n  placeholder,\n  placeholderClassName,\n  secureTextEntry,\n  editable = true,\n  style,\n  accessibilityLabel,\n  testID,\n  ...props\n}: UniversalTextInputProps) {\n  return (\n    <input\n      type={secureTextEntry ? \"password\" : \"text\"}\n      className={cn(className)}\n      value={value}\n      onChange={(e) => onChangeText?.(e.target.value)}\n      placeholder={placeholder}\n      disabled={!editable}\n      style={style}\n      aria-label={accessibilityLabel}\n      data-testid={testID}\n      {...props}\n    />\n  );\n}\n",
+      "type": "registry:ui"
+    },
+    {
+      "path": "registry/new-york/ui/primitives/text-input.native.tsx",
+      "content": "/**\n * Universal TextInput primitive (Native version)\n * Uses React Native TextInput with NativeWind support\n */\nimport * as React from \"react\";\nimport { TextInput as RNTextInput } from \"react-native\";\nimport type { UniversalTextInputProps } from \"./types\";\n\nexport function TextInput({\n  className,\n  value,\n  onChangeText,\n  placeholder,\n  placeholderClassName,\n  secureTextEntry,\n  editable = true,\n  style,\n  accessibilityLabel,\n  testID,\n  ...props\n}: UniversalTextInputProps) {\n  return (\n    <RNTextInput\n      className={className}\n      value={value}\n      onChangeText={onChangeText}\n      placeholder={placeholder}\n      secureTextEntry={secureTextEntry}\n      editable={editable}\n      style={style}\n      accessibilityLabel={accessibilityLabel}\n      testID={testID}\n      {...props}\n    />\n  );\n}\n",
+      "type": "registry:ui"
+    },
+    {
+      "path": "registry/new-york/ui/primitives/index.ts",
+      "content": "/**\n * Universal UI Primitives\n * Cross-platform components that work on web and native\n */\n\nexport { View } from \"./view\";\nexport { Text } from \"./text\";\nexport { Pressable } from \"./pressable\";\nexport { TextInput } from \"./text-input\";\nexport type * from \"./types\";\n",
+      "type": "registry:lib"
+    }
+  ]
+}

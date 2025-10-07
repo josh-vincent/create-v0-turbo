@@ -1,0 +1,24 @@
+{
+  "name": "input",
+  "type": "registry:ui",
+  "description": "A universal input component that works on web and native",
+  "dependencies": [],
+  "registryDependencies": [],
+  "files": [
+    {
+      "path": "src/components/input.ts",
+      "type": "registry:lib"
+    },
+    {
+      "path": "src/components/input.tsx",
+      "type": "registry:ui"
+    },
+    {
+      "path": "src/components/input.native.tsx",
+      "type": "registry:ui"
+    }
+  ],
+  "tailwind": {
+    "config": {}
+  }
+}

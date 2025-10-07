@@ -1,0 +1,24 @@
+{
+  "name": "button",
+  "type": "registry:ui",
+  "description": "A universal button component that works on web and native",
+  "dependencies": ["class-variance-authority", "radix-ui"],
+  "registryDependencies": [],
+  "files": [
+    {
+      "path": "src/components/button.ts",
+      "type": "registry:lib"
+    },
+    {
+      "path": "src/components/button.tsx",
+      "type": "registry:ui"
+    },
+    {
+      "path": "src/components/button.native.tsx",
+      "type": "registry:ui"
+    }
+  ],
+  "tailwind": {
+    "config": {}
+  }
+}

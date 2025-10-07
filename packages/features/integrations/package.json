@@ -1,0 +1,29 @@
+{
+  "name": "@tocld/features-integrations",
+  "version": "1.0.0",
+  "private": true,
+  "type": "module",
+  "exports": {
+    ".": "./src/index.ts",
+    "./constants": "./src/constants.ts",
+    "./routers": "./src/routers/index.ts",
+    "./callbacks": "./src/callbacks/index.ts",
+    "./ui": "./src/ui/index.ts"
+  },
+  "scripts": {
+    "clean": "git clean -xdf .turbo node_modules",
+    "format": "biome check .",
+    "lint": "biome check .",
+    "typecheck": "tsc --noEmit"
+  },
+  "dependencies": {
+    "@tocld/db": "workspace:*",
+    "@tocld/supabase": "workspace:*",
+    "@tocld/oauth-sync": "workspace:*",
+    "zod": "^4.1.5"
+  },
+  "devDependencies": {
+    "@tocld/tsconfig": "workspace:*",
+    "typescript": "^5.9.2"
+  }
+}

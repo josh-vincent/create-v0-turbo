@@ -1,0 +1,19 @@
+{
+  "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+  "name": "use-network-status",
+  "type": "registry:hook",
+  "title": "useNetworkStatus Hook",
+  "description": "Universal hook to detect online/offline status. Works with browser APIs on web and NetInfo on native.",
+  "files": [
+    {
+      "path": "registry/new-york/ui/use-network-status.tsx",
+      "content": "/**\n * Network Status Hook - Web implementation\n * Detects online/offline status using browser APIs\n */\n\"use client\";\n\nimport { useEffect, useState } from \"react\";\n\nexport interface NetworkStatus {\n  isOnline: boolean;\n  isOffline: boolean;\n}\n\n/**\n * Hook to detect network connectivity status\n *\n * @example\n * ```tsx\n * const { isOnline, isOffline } = useNetworkStatus();\n *\n * if (isOffline) {\n *   return <OfflineBanner />;\n * }\n * ```\n */\nexport function useNetworkStatus(): NetworkStatus {\n  const [isOnline, setIsOnline] = useState(\n    typeof navigator !== \"undefined\" ? navigator.onLine : true,\n  );\n\n  useEffect(() => {\n    const handleOnline = () => setIsOnline(true);\n    const handleOffline = () => setIsOnline(false);\n\n    window.addEventListener(\"online\", handleOnline);\n    window.addEventListener(\"offline\", handleOffline);\n\n    return () => {\n      window.removeEventListener(\"online\", handleOnline);\n      window.removeEventListener(\"offline\", handleOffline);\n    };\n  }, []);\n\n  return {\n    isOnline,\n    isOffline: !isOnline,\n  };\n}\n",
+      "type": "registry:hook"
+    },
+    {
+      "path": "registry/new-york/ui/use-network-status.native.tsx",
+      "content": "/**\n * Network Status Hook - Native implementation\n * Detects online/offline status using @react-native-community/netinfo\n */\nimport { useEffect, useState } from \"react\";\nimport NetInfo from \"@react-native-community/netinfo\";\n\nexport interface NetworkStatus {\n  isOnline: boolean;\n  isOffline: boolean;\n}\n\n/**\n * Hook to detect network connectivity status\n *\n * @example\n * ```tsx\n * const { isOnline, isOffline } = useNetworkStatus();\n *\n * if (isOffline) {\n *   return <OfflineBanner />;\n * }\n * ```\n */\nexport function useNetworkStatus(): NetworkStatus {\n  const [isOnline, setIsOnline] = useState(true);\n\n  useEffect(() => {\n    // Get initial state\n    NetInfo.fetch().then((state) => {\n      setIsOnline(state.isConnected ?? true);\n    });\n\n    // Subscribe to network state updates\n    const unsubscribe = NetInfo.addEventListener((state) => {\n      setIsOnline(state.isConnected ?? true);\n    });\n\n    return () => {\n      unsubscribe();\n    };\n  }, []);\n\n  return {\n    isOnline,\n    isOffline: !isOnline,\n  };\n}\n",
+      "type": "registry:hook"
+    }
+  ]
+}

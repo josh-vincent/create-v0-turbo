@@ -1,12 +1,28 @@
-import { headers } from "next/headers";
 import { redirect } from "next/navigation";
 
-import { Button } from "@acme/ui/button";
+import { createClient } from "@tocld/supabase/server";
+import { Button } from "@tocld/ui/button";
 
-import { auth, getSession } from "~/auth/server";
+import { authConfig } from "~/lib/auth-config";
 
 export async function AuthShowcase() {
-  const session = await getSession();
+  if (authConfig.isMockMode) {
+    return (
+      <div className="flex flex-col items-center justify-center gap-4">
+        <p className="text-center text-2xl">
+          <span>Logged in as {authConfig.mockSession.user.email}</span>
+        </p>
+        <p className="text-xs text-muted-foreground">
+          🔓 Mock Mode Active - Authentication Bypassed
+        </p>
+      </div>
+    );
+  }
+
+  const supabase = await createClient();
+  const {
+    data: { session },
+  } = await supabase.auth.getSession();
 
   if (!session) {
     return (
@@ -15,19 +31,10 @@ export async function AuthShowcase() {
           size="lg"
           formAction={async () => {
             "use server";
-            const res = await auth.api.signInSocial({
-              body: {
-                provider: "discord",
-                callbackURL: "/",
-              },
-            });
-            if (!res.url) {
-              throw new Error("No URL returned from signInSocial");
-            }
-            redirect(res.url);
+            redirect("/login");
           }}
         >
-          Sign in with Discord
+          Sign in
         </Button>
       </form>
     );
@@ -36,7 +43,7 @@ export async function AuthShowcase() {
   return (
     <div className="flex flex-col items-center justify-center gap-4">
       <p className="text-center text-2xl">
-        <span>Logged in as {session.user.name}</span>
+        <span>Logged in as {session.user.email}</span>
       </p>
 
       <form>
@@ -44,10 +51,9 @@ export async function AuthShowcase() {
           size="lg"
           formAction={async () => {
             "use server";
-            await auth.api.signOut({
-              headers: await headers(),
-            });
-            redirect("/");
+            const supabase = await createClient();
+            await supabase.auth.signOut();
+            redirect("/login");
           }}
         >
           Sign out

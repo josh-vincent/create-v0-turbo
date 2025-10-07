@@ -1,13 +1,14 @@
+import { HydrationBoundary, dehydrate } from "@tanstack/react-query";
 import type { TRPCQueryOptions } from "@trpc/tanstack-react-query";
-import { cache } from "react";
-import { headers } from "next/headers";
-import { dehydrate, HydrationBoundary } from "@tanstack/react-query";
 import { createTRPCOptionsProxy } from "@trpc/tanstack-react-query";
+import { headers } from "next/headers";
+import { cache } from "react";
 
-import type { AppRouter } from "@acme/api";
-import { appRouter, createTRPCContext } from "@acme/api";
+import type { AppRouter, Session } from "@tocld/api";
+import { appRouter, createTRPCContext } from "@tocld/api";
+import { createClient } from "@tocld/supabase/server";
 
-import { auth } from "~/auth/server";
+import { authConfig } from "~/lib/auth-config";
 import { createQueryClient } from "./query-client";
 
 /**
@@ -18,9 +19,34 @@ const createContext = cache(async () => {
   const heads = new Headers(await headers());
   heads.set("x-trpc-source", "rsc");
 
+  // Get session from Supabase or mock
+  let session: Session | null = null;
+
+  if (authConfig.isMockMode) {
+    // Use mock session
+    session = authConfig.mockSession;
+  } else {
+    try {
+      const supabase = await createClient();
+      const { data } = await supabase.auth.getUser();
+
+      if (data.user) {
+        session = {
+          user: {
+            id: data.user.id,
+            email: data.user.email,
+          },
+        };
+      }
+    } catch (error) {
+      console.error("Error getting Supabase session:", error);
+      session = null;
+    }
+  }
+
   return createTRPCContext({
     headers: heads,
-    auth,
+    session,
   });
 });
 
@@ -34,16 +60,10 @@ export const trpc = createTRPCOptionsProxy<AppRouter>({
 
 export function HydrateClient(props: { children: React.ReactNode }) {
   const queryClient = getQueryClient();
-  return (
-    <HydrationBoundary state={dehydrate(queryClient)}>
-      {props.children}
-    </HydrationBoundary>
-  );
+  return <HydrationBoundary state={dehydrate(queryClient)}>{props.children}</HydrationBoundary>;
 }
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
-export function prefetch<T extends ReturnType<TRPCQueryOptions<any>>>(
-  queryOptions: T,
-) {
+export function prefetch<T extends ReturnType<TRPCQueryOptions<any>>>(queryOptions: T) {
   const queryClient = getQueryClient();
   if (queryOptions.queryKey[1]?.type === "infinite") {
     // eslint-disable-next-line @typescript-eslint/no-unsafe-argument, @typescript-eslint/no-explicit-any

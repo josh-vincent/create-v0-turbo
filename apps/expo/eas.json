@@ -6,15 +6,21 @@
   "build": {
     "base": {
       "node": "22.12.0",
-      "pnpm": "9.15.4",
+      "bun": "1.2.22",
       "ios": {
         "resourceClass": "m-medium"
+      },
+      "env": {
+        "EXPO_PUBLIC_MOCK_AUTH": "false"
       }
     },
     "development": {
       "extends": "base",
       "developmentClient": true,
-      "distribution": "internal"
+      "distribution": "internal",
+      "env": {
+        "EXPO_PUBLIC_MOCK_AUTH": "true"
+      }
     },
     "preview": {
       "extends": "base",

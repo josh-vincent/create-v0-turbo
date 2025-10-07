@@ -1,0 +1,25 @@
+{
+  "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+  "name": "button",
+  "type": "registry:ui",
+  "title": "Button",
+  "description": "A universal button component that works on web and native platforms.",
+  "dependencies": ["class-variance-authority"],
+  "files": [
+    {
+      "path": "registry/new-york/ui/button.ts",
+      "content": "/**\n * Button - Shared types and variants\n * This file contains the shared logic between web and native implementations\n */\nimport type { VariantProps } from \"class-variance-authority\";\nimport { cva } from \"class-variance-authority\";\n\n/**\n * Button variants using CVA\n * These styles work with both web (Tailwind) and native (NativeWind)\n */\nexport const buttonVariants = cva(\n  \"inline-flex items-center justify-center whitespace-nowrap rounded-md text-sm font-medium transition-colors focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring disabled:pointer-events-none disabled:opacity-50\",\n  {\n    variants: {\n      variant: {\n        primary:\n          \"bg-primary text-primary-foreground shadow hover:bg-primary/90\",\n        destructive:\n          \"bg-destructive text-destructive-foreground shadow-sm hover:bg-destructive/90\",\n        outline:\n          \"border border-input bg-background shadow-sm hover:bg-accent hover:text-accent-foreground\",\n        secondary:\n          \"bg-secondary text-secondary-foreground shadow-sm hover:bg-secondary/80\",\n        ghost: \"hover:bg-accent hover:text-accent-foreground\",\n        link: \"text-primary underline-offset-4 hover:underline\",\n      },\n      size: {\n        sm: \"h-8 rounded-md px-3 text-xs\",\n        md: \"h-9 px-4 py-2\",\n        lg: \"h-10 rounded-md px-8\",\n        icon: \"size-9\",\n      },\n    },\n    defaultVariants: {\n      variant: \"primary\",\n      size: \"md\",\n    },\n  },\n);\n\n/**\n * Base button props interface\n * Shared across web and native implementations\n */\nexport interface BaseButtonProps extends VariantProps<typeof buttonVariants> {\n  className?: string;\n  disabled?: boolean;\n  children?: React.ReactNode;\n}\n\nexport type ButtonVariant = NonNullable<BaseButtonProps[\"variant\"]>;\nexport type ButtonSize = NonNullable<BaseButtonProps[\"size\"]>;\n",
+      "type": "registry:lib"
+    },
+    {
+      "path": "registry/new-york/ui/button.tsx",
+      "content": "/**\n * Button - Web implementation\n * Uses Radix UI Slot for composition and standard button element\n */\nimport * as React from \"react\";\nimport { Slot } from \"radix-ui\";\n\nimport { cn } from \"@tocld/ui\";\nimport { buttonVariants, type BaseButtonProps } from \"./button.js\";\n\n// Re-export shared types for convenience\nexport type { BaseButtonProps, ButtonVariant, ButtonSize } from \"./button.js\";\nexport { buttonVariants } from \"./button.js\";\n\nexport interface ButtonProps\n  extends React.ComponentProps<\"button\">,\n    BaseButtonProps {\n  asChild?: boolean;\n}\n\nexport function Button({\n  className,\n  variant,\n  size,\n  asChild = false,\n  ...props\n}: ButtonProps) {\n  const Comp = asChild ? Slot.Slot : \"button\";\n  return (\n    <Comp\n      className={cn(buttonVariants({ variant, size, className }))}\n      {...props}\n    />\n  );\n}\n",
+      "type": "registry:ui"
+    },
+    {
+      "path": "registry/new-york/ui/button.native.tsx",
+      "content": "/**\n * Button - Native implementation\n * Uses React Native Pressable with NativeWind styling\n */\nimport * as React from \"react\";\n\nimport { Pressable, Text } from \"./primitives\";\nimport { cn } from \"@tocld/ui\";\nimport { buttonVariants, type BaseButtonProps } from \"./button\";\n\nexport interface ButtonProps extends BaseButtonProps {\n  onPress?: () => void;\n  accessibilityLabel?: string;\n  testID?: string;\n}\n\nexport function Button({\n  className,\n  variant,\n  size,\n  disabled,\n  onPress,\n  children,\n  accessibilityLabel,\n  testID,\n}: ButtonProps) {\n  return (\n    <Pressable\n      className={cn(buttonVariants({ variant, size, className }))}\n      onPress={onPress}\n      disabled={disabled}\n      accessibilityRole=\"button\"\n      accessibilityLabel={accessibilityLabel}\n      accessibilityState={{ disabled }}\n      testID={testID}\n    >\n      {typeof children === \"string\" ? (\n        <Text className=\"text-inherit font-inherit\">{children}</Text>\n      ) : (\n        children\n      )}\n    </Pressable>\n  );\n}\n",
+      "type": "registry:ui"
+    }
+  ]
+}

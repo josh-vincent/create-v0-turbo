@@ -1,33 +1,34 @@
 import type { Metadata, Viewport } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
 
-import { cn } from "@acme/ui";
-import { ThemeProvider, ThemeToggle } from "@acme/ui/theme";
-import { Toaster } from "@acme/ui/toast";
+import { cn } from "@tocld/ui";
+import { ThemeProvider, ThemeToggle } from "@tocld/ui/theme";
+import { Toaster } from "@tocld/ui/toast";
 
+import { MockModeIndicator } from "~/components/mock-mode-indicator";
+import { MockModeWrapper } from "~/components/mock-mode-wrapper";
 import { env } from "~/env";
+import { MSWProvider } from "~/mocks/msw-provider";
 import { TRPCReactProvider } from "~/trpc/react";
 
 import "~/app/globals.css";
 
 export const metadata: Metadata = {
   metadataBase: new URL(
-    env.VERCEL_ENV === "production"
-      ? "https://turbo.t3.gg"
-      : "http://localhost:3000",
+    env.VERCEL_ENV === "production" ? "https://turbo.v0.gg" : "http://localhost:3000",
   ),
-  title: "Create T3 Turbo",
+  title: "Create v0 Turbo",
   description: "Simple monorepo with shared backend for web & mobile apps",
   openGraph: {
-    title: "Create T3 Turbo",
+    title: "Create v0 Turbo",
     description: "Simple monorepo with shared backend for web & mobile apps",
-    url: "https://create-t3-turbo.vercel.app",
-    siteName: "Create T3 Turbo",
+    url: "https://create-v0-turbo.vercel.app",
+    siteName: "Create v0 Turbo",
   },
   twitter: {
     card: "summary_large_image",
-    site: "@jullerino",
-    creator: "@jullerino",
+    site: "@vinnai",
+    creator: "@vinnai",
   },
 };
 
@@ -57,13 +58,18 @@ export default function RootLayout(props: { children: React.ReactNode }) {
           geistMono.variable,
         )}
       >
-        <ThemeProvider attribute="class" defaultTheme="system" enableSystem>
-          <TRPCReactProvider>{props.children}</TRPCReactProvider>
-          <div className="absolute bottom-4 right-4">
-            <ThemeToggle />
-          </div>
-          <Toaster />
-        </ThemeProvider>
+        <MSWProvider>
+          <ThemeProvider attribute="class" defaultTheme="system" enableSystem>
+            <MockModeIndicator />
+            <MockModeWrapper>
+              <TRPCReactProvider>{props.children}</TRPCReactProvider>
+            </MockModeWrapper>
+            <div className="absolute bottom-4 right-4">
+              <ThemeToggle />
+            </div>
+            <Toaster />
+          </ThemeProvider>
+        </MSWProvider>
       </body>
     </html>
   );

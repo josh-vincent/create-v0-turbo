@@ -1,0 +1,38 @@
+{
+  "name": "@tocld/supabase",
+  "version": "1.0.0",
+  "private": true,
+  "type": "module",
+  "exports": {
+    "./server": "./src/client/server.ts",
+    "./client": "./src/client/client.ts",
+    "./native": "./src/client/native.ts",
+    "./middleware": "./src/client/middleware.ts",
+    "./types": "./src/types/index.ts"
+  },
+  "scripts": {
+    "clean": "git clean -xdf .turbo node_modules",
+    "format": "biome check .",
+    "lint": "biome check .",
+    "typecheck": "tsc --noEmit"
+  },
+  "dependencies": {
+    "@supabase/ssr": "^0.7.0",
+    "@supabase/supabase-js": "^2.56.0",
+    "react": "19.1.1",
+    "server-only": "^0.0.1"
+  },
+  "devDependencies": {
+    "@tocld/tsconfig": "workspace:*",
+    "@types/react": "^19.1.12",
+    "typescript": "^5.9.2"
+  },
+  "peerDependencies": {
+    "expo-secure-store": "*"
+  },
+  "peerDependenciesMeta": {
+    "expo-secure-store": {
+      "optional": true
+    }
+  }
+}

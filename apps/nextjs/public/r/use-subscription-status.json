@@ -1,0 +1,17 @@
+{
+  "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+  "name": "use-subscription-status",
+  "type": "registry:hook",
+  "title": "useSubscriptionStatus Hook",
+  "description": "Check user subscription status with helper booleans (isActive, isPastDue, etc.).",
+  "dependencies": [],
+  "registryDependencies": [],
+  "files": [
+    {
+      "path": "registry/new-york/hooks/use-subscription-status.ts",
+      "content": "\"use client\";\n\nimport { api } from \"@tocld/api/client\";\n\nexport type SubscriptionStatus =\n  | \"active\"\n  | \"canceled\"\n  | \"past_due\"\n  | \"incomplete\"\n  | \"trialing\"\n  | \"none\";\n\nexport interface UseSubscriptionStatusReturn {\n  status: SubscriptionStatus;\n  isActive: boolean;\n  isPastDue: boolean;\n  isLoading: boolean;\n  subscription: any | null;\n  refetch: () => void;\n}\n\n/**\n * Hook to check user's subscription status\n * @returns Subscription status and helper booleans\n */\nexport function useSubscriptionStatus(): UseSubscriptionStatusReturn {\n  const { data: subscription, isLoading, refetch } = api.subscription.getCurrent.useQuery();\n\n  const status: SubscriptionStatus = subscription?.status || \"none\";\n  const isActive = status === \"active\" || status === \"trialing\";\n  const isPastDue = status === \"past_due\";\n\n  return {\n    status,\n    isActive,\n    isPastDue,\n    isLoading,\n    subscription: subscription || null,\n    refetch,\n  };\n}\n",
+      "type": "registry:hook"
+    }
+  ],
+  "categories": ["payment"]
+}

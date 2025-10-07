@@ -1,0 +1,17 @@
+{
+  "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+  "name": "use-integration-status",
+  "type": "registry:hook",
+  "title": "useIntegrationStatus Hook",
+  "description": "Check OAuth integration connection status. Provides isConnected() helper and list of connected providers.",
+  "dependencies": [],
+  "registryDependencies": [],
+  "files": [
+    {
+      "path": "registry/new-york/hooks/use-integration-status.ts",
+      "content": "\"use client\";\n\nimport { api } from \"@tocld/api/client\";\n\nexport type IntegrationProvider =\n  | \"gmail\"\n  | \"outlook\"\n  | \"google_drive\"\n  | \"dropbox\"\n  | \"slack\"\n  | \"github\";\n\nexport interface UseIntegrationStatusReturn {\n  isConnected: (provider: IntegrationProvider) => boolean;\n  connectedProviders: IntegrationProvider[];\n  integrations: any[];\n  isLoading: boolean;\n  refetch: () => void;\n}\n\n/**\n * Hook to check integration connection status\n * @returns Helper functions and data for checking OAuth connections\n */\nexport function useIntegrationStatus(): UseIntegrationStatusReturn {\n  const { data: integrations, isLoading, refetch } = api.integration.list.useQuery();\n\n  const connectedProviders = (integrations || []).map(\n    (int) => int.provider as IntegrationProvider,\n  );\n\n  const isConnected = (provider: IntegrationProvider) => {\n    return connectedProviders.includes(provider);\n  };\n\n  return {\n    isConnected,\n    connectedProviders,\n    integrations: integrations || [],\n    isLoading,\n    refetch,\n  };\n}\n",
+      "type": "registry:hook"
+    }
+  ],
+  "categories": ["integration"]
+}

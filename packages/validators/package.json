@@ -1,5 +1,5 @@
 {
-  "name": "@acme/validators",
+  "name": "@tocld/validators",
   "private": true,
   "type": "module",
   "exports": {
@@ -13,20 +13,15 @@
     "build": "tsc",
     "clean": "git clean -xdf .cache .turbo dist node_modules",
     "dev": "tsc",
-    "format": "prettier --check . --ignore-path ../../.gitignore",
-    "lint": "eslint",
+    "format": "biome check .",
+    "lint": "biome check .",
     "typecheck": "tsc --noEmit --emitDeclarationOnly false"
   },
   "dependencies": {
-    "zod": "catalog:"
+    "zod": "^4.1.5"
   },
   "devDependencies": {
-    "@acme/eslint-config": "workspace:*",
-    "@acme/prettier-config": "workspace:*",
-    "@acme/tsconfig": "workspace:*",
-    "eslint": "catalog:",
-    "prettier": "catalog:",
-    "typescript": "catalog:"
-  },
-  "prettier": "@acme/prettier-config"
+    "@tocld/tsconfig": "workspace:*",
+    "typescript": "^5.9.2"
+  }
 }

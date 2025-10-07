@@ -1,37 +1,30 @@
 {
-  "name": "create-t3-turbo",
+  "name": "create-v0-turbo",
   "private": true,
+  "workspaces": ["apps/*", "packages/*", "packages/features/*", "tooling/*"],
   "engines": {
-    "node": ">=22.19.0",
-    "pnpm": ">=10.15.1"
+    "node": ">=22.19.0"
   },
-  "packageManager": "pnpm@10.15.1",
+  "packageManager": "bun@1.2.21",
   "scripts": {
     "build": "turbo run build",
     "clean": "git clean -xdf node_modules",
     "clean:workspaces": "turbo run clean",
-    "auth:generate": "pnpm -F @acme/auth generate",
-    "db:push": "turbo -F @acme/db push",
-    "db:studio": "turbo -F @acme/db studio",
+    "db:push": "turbo -F @tocld/db push",
+    "db:studio": "turbo -F @tocld/db studio",
     "dev": "turbo watch dev --continue",
-    "dev:next": "turbo watch dev -F @acme/nextjs...",
-    "format": "turbo run format --continue -- --cache --cache-location .cache/.prettiercache",
-    "format:fix": "turbo run format --continue -- --write --cache --cache-location .cache/.prettiercache",
-    "lint": "turbo run lint --continue -- --cache --cache-location .cache/.eslintcache",
-    "lint:fix": "turbo run lint --continue -- --fix --cache --cache-location .cache/.eslintcache",
-    "lint:ws": "pnpm dlx sherif@latest",
-    "postinstall": "pnpm lint:ws",
+    "dev:next": "turbo watch dev -F @tocld/nextjs...",
+    "format": "turbo run format --continue",
+    "lint": "turbo run lint --continue",
     "typecheck": "turbo run typecheck",
     "ui-add": "turbo run ui-add",
     "android": "expo run:android",
     "ios": "expo run:ios"
   },
   "devDependencies": {
-    "@acme/prettier-config": "workspace:*",
+    "@biomejs/biome": "1.9.4",
     "@turbo/gen": "^2.5.6",
-    "prettier": "catalog:",
     "turbo": "^2.5.6",
-    "typescript": "catalog:"
-  },
-  "prettier": "@acme/prettier-config"
+    "typescript": "^5.9.2"
+  }
 }

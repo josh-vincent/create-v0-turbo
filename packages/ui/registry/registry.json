@@ -1,0 +1,6 @@
+{
+  "name": "@tocld/ui",
+  "version": "0.1.0",
+  "homepage": "https://github.com/yourusername/create-v0-turbo",
+  "items": ["button", "input"]
+}

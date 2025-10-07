@@ -1,52 +1,107 @@
 "use client";
 
 import type { QueryClient } from "@tanstack/react-query";
-import { useState } from "react";
-import { QueryClientProvider } from "@tanstack/react-query";
-import {
-  createTRPCClient,
-  httpBatchStreamLink,
-  loggerLink,
-} from "@trpc/client";
+import { QueryClientProvider, isServer } from "@tanstack/react-query";
+import type { AppRouter } from "@tocld/api";
+import { createClient } from "@tocld/supabase/client";
+import { type TRPCLink, createTRPCClient, httpBatchLink, loggerLink } from "@trpc/client";
+import { observable } from "@trpc/server/observable";
 import { createTRPCContext } from "@trpc/tanstack-react-query";
-import SuperJSON from "superjson";
-
-import type { AppRouter } from "@acme/api";
-
-import { env } from "~/env";
+import { useState } from "react";
+import superjson from "superjson";
 import { createQueryClient } from "./query-client";
 
-let clientQueryClientSingleton: QueryClient | undefined = undefined;
-const getQueryClient = () => {
-  if (typeof window === "undefined") {
-    // Server: always make a new query client
+export const { TRPCProvider, useTRPC } = createTRPCContext<AppRouter>();
+
+// Export api as an alias for useTRPC for convenience
+export const api = useTRPC;
+
+let browserQueryClient: QueryClient;
+
+function getQueryClient() {
+  if (isServer) {
     return createQueryClient();
-  } else {
-    // Browser: use singleton pattern to keep the same query client
-    return (clientQueryClientSingleton ??= createQueryClient());
   }
+
+  if (!browserQueryClient) browserQueryClient = createQueryClient();
+  return browserQueryClient;
+}
+
+// Custom error link to handle authentication errors
+const errorLink: TRPCLink<AppRouter> = () => {
+  return ({ next, op }) => {
+    return observable((observer) => {
+      const unsubscribe = next(op).subscribe({
+        next(value) {
+          observer.next(value);
+        },
+        error(err) {
+          // Handle UNAUTHORIZED errors (expired sessions)
+          if (err.data?.code === "UNAUTHORIZED") {
+            const supabase = createClient();
+            supabase.auth.signOut().then(() => {
+              if (typeof window !== "undefined") {
+                const returnTo = window.location.pathname + window.location.search;
+                window.location.href = `/login?return_to=${encodeURIComponent(returnTo)}`;
+              }
+            });
+          }
+          observer.error(err);
+        },
+        complete() {
+          observer.complete();
+        },
+      });
+      return unsubscribe;
+    });
+  };
 };
 
-export const { useTRPC, TRPCProvider } = createTRPCContext<AppRouter>();
-
-export function TRPCReactProvider(props: { children: React.ReactNode }) {
+export function TRPCReactProvider(
+  props: Readonly<{
+    children: React.ReactNode;
+  }>,
+) {
   const queryClient = getQueryClient();
-
   const [trpcClient] = useState(() =>
     createTRPCClient<AppRouter>({
       links: [
+        errorLink,
         loggerLink({
-          enabled: (op) =>
-            env.NODE_ENV === "development" ||
-            (op.direction === "down" && op.result instanceof Error),
+          enabled: (opts) =>
+            process.env.NODE_ENV === "development" ||
+            (opts.direction === "down" && opts.result instanceof Error),
         }),
-        httpBatchStreamLink({
-          transformer: SuperJSON,
-          url: getBaseUrl() + "/api/trpc",
-          headers() {
-            const headers = new Headers();
-            headers.set("x-trpc-source", "nextjs-react");
-            return headers;
+        httpBatchLink({
+          url: `${getBaseUrl()}/api/trpc`,
+          transformer: superjson,
+          async headers() {
+            const supabase = createClient();
+
+            const {
+              data: { session },
+            } = await supabase.auth.getSession();
+
+            // If session exists, check if token is expired or will expire soon
+            if (session?.expires_at) {
+              const expiresAt = session.expires_at * 1000;
+              const now = Date.now();
+              const bufferTime = 60 * 1000; // 60 seconds buffer
+
+              if (expiresAt - now < bufferTime) {
+                const {
+                  data: { session: refreshedSession },
+                } = await supabase.auth.refreshSession();
+
+                return {
+                  Authorization: `Bearer ${refreshedSession?.access_token || session.access_token}`,
+                };
+              }
+            }
+
+            return {
+              Authorization: session?.access_token ? `Bearer ${session.access_token}` : "",
+            };
           },
         }),
       ],
@@ -62,9 +117,8 @@ export function TRPCReactProvider(props: { children: React.ReactNode }) {
   );
 }
 
-const getBaseUrl = () => {
-  if (typeof window !== "undefined") return window.location.origin;
-  if (env.VERCEL_URL) return `https://${env.VERCEL_URL}`;
-  // eslint-disable-next-line no-restricted-properties
+function getBaseUrl() {
+  if (typeof window !== "undefined") return "";
+  if (process.env.VERCEL_URL) return `https://${process.env.VERCEL_URL}`;
   return `http://localhost:${process.env.PORT ?? 3000}`;
-};
+}

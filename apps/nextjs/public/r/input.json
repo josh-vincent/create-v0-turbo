@@ -1,0 +1,24 @@
+{
+  "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+  "name": "input",
+  "type": "registry:ui",
+  "title": "Input",
+  "description": "A universal input component that works on web and native platforms.",
+  "files": [
+    {
+      "path": "registry/new-york/ui/input.ts",
+      "content": "/**\n * Input - Shared types and styles\n * This file contains the shared logic between web and native implementations\n */\n\n/**\n * Base input styles that work with both Tailwind and NativeWind\n */\nexport const inputClassName =\n  \"flex h-9 w-full rounded-md border border-input bg-transparent px-3 py-1 text-sm shadow-sm transition-colors file:border-0 file:bg-transparent file:text-sm file:font-medium placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring disabled:cursor-not-allowed disabled:opacity-50\";\n\n/**\n * Base input props interface\n * Shared across web and native implementations\n */\nexport interface BaseInputProps {\n  className?: string;\n  value?: string;\n  onChange?: (value: string) => void;\n  placeholder?: string;\n  disabled?: boolean;\n  editable?: boolean;\n}\n",
+      "type": "registry:lib"
+    },
+    {
+      "path": "registry/new-york/ui/input.tsx",
+      "content": "/**\n * Input - Web implementation\n * Uses standard HTML input element\n */\nimport type { ComponentProps } from \"react\";\n\nimport { cn } from \"@tocld/ui\";\nimport { inputClassName } from \"./input.js\";\n\n// Re-export shared types and styles\nexport type { BaseInputProps } from \"./input.js\";\nexport { inputClassName } from \"./input.js\";\n\nexport interface InputProps extends ComponentProps<\"input\"> {\n  className?: string;\n}\n\nexport function Input({ className, ...props }: InputProps) {\n  return (\n    <input className={cn(inputClassName, className)} {...props} />\n  );\n}\n",
+      "type": "registry:ui"
+    },
+    {
+      "path": "registry/new-york/ui/input.native.tsx",
+      "content": "/**\n * Input - Native implementation\n * Uses React Native TextInput with NativeWind styling\n */\nimport * as React from \"react\";\n\nimport { TextInput } from \"./primitives\";\nimport { cn } from \"@tocld/ui\";\nimport { inputClassName, type BaseInputProps } from \"./input\";\n\nexport interface InputProps extends BaseInputProps {\n  onChangeText?: (text: string) => void;\n  secureTextEntry?: boolean;\n  accessibilityLabel?: string;\n  testID?: string;\n}\n\nexport function Input({\n  className,\n  value,\n  onChangeText,\n  onChange,\n  placeholder,\n  disabled,\n  editable = true,\n  secureTextEntry,\n  accessibilityLabel,\n  testID,\n}: InputProps) {\n  return (\n    <TextInput\n      className={cn(inputClassName, className)}\n      value={value}\n      onChangeText={onChangeText || onChange}\n      placeholder={placeholder}\n      editable={!disabled && editable}\n      secureTextEntry={secureTextEntry}\n      accessibilityLabel={accessibilityLabel}\n      testID={testID}\n    />\n  );\n}\n",
+      "type": "registry:ui"
+    }
+  ]
+}

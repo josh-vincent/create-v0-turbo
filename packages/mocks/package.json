@@ -1,0 +1,23 @@
+{
+  "name": "@tocld/mocks",
+  "version": "1.0.0",
+  "private": true,
+  "type": "module",
+  "exports": {
+    ".": "./src/index.ts",
+    "./handlers": "./src/handlers/index.ts"
+  },
+  "scripts": {
+    "clean": "git clean -xdf .turbo node_modules",
+    "format": "biome check .",
+    "lint": "biome check .",
+    "typecheck": "tsc --noEmit"
+  },
+  "dependencies": {
+    "msw": "^2.7.0"
+  },
+  "devDependencies": {
+    "@tocld/tsconfig": "workspace:*",
+    "typescript": "^5.9.2"
+  }
+}

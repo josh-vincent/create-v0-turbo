@@ -6,12 +6,11 @@
  * tl;dr - this is where all the tRPC server stuff is created and plugged in.
  * The pieces you will need to use are documented accordingly near the end
  */
-import { initTRPC, TRPCError } from "@trpc/server";
+import { TRPCError, initTRPC } from "@trpc/server";
 import superjson from "superjson";
-import { z, ZodError } from "zod/v4";
+import { ZodError, z } from "zod/v4";
 
-import type { Auth } from "@acme/auth";
-import { db } from "@acme/db/client";
+import { db, isDatabaseAvailable } from "@tocld/db/client";
 
 /**
  * 1. CONTEXT
@@ -26,18 +25,23 @@ import { db } from "@acme/db/client";
  * @see https://trpc.io/docs/server/context
  */
 
+export interface Session {
+  user: {
+    id: string;
+    email?: string;
+  };
+}
+
 export const createTRPCContext = async (opts: {
   headers: Headers;
-  auth: Auth;
+  session: Session | null;
 }) => {
-  const authApi = opts.auth.api;
-  const session = await authApi.getSession({
-    headers: opts.headers,
-  });
+  const isMockMode = !isDatabaseAvailable();
+
   return {
-    authApi,
-    session,
+    session: opts.session,
     db,
+    isMockMode,
   };
 };
 /**
@@ -113,16 +117,14 @@ export const publicProcedure = t.procedure.use(timingMiddleware);
  *
  * @see https://trpc.io/docs/procedures
  */
-export const protectedProcedure = t.procedure
-  .use(timingMiddleware)
-  .use(({ ctx, next }) => {
-    if (!ctx.session?.user) {
-      throw new TRPCError({ code: "UNAUTHORIZED" });
-    }
-    return next({
-      ctx: {
-        // infers the `session` as non-nullable
-        session: { ...ctx.session, user: ctx.session.user },
-      },
-    });
+export const protectedProcedure = t.procedure.use(timingMiddleware).use(({ ctx, next }) => {
+  if (!ctx.session?.user) {
+    throw new TRPCError({ code: "UNAUTHORIZED" });
+  }
+  return next({
+    ctx: {
+      // infers the `session` as non-nullable
+      session: { ...ctx.session, user: ctx.session.user },
+    },
   });
+});

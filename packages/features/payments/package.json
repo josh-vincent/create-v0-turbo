@@ -1,0 +1,33 @@
+{
+  "name": "@tocld/features-payments",
+  "version": "1.0.0",
+  "private": true,
+  "type": "module",
+  "exports": {
+    ".": "./src/index.ts",
+    "./constants": "./src/constants.ts",
+    "./types": "./src/types.ts",
+    "./manifest": "./src/manifest.ts",
+    "./providers": "./src/providers/index.ts",
+    "./routers": "./src/routers/index.ts",
+    "./webhooks": "./src/webhooks/index.ts",
+    "./ui": "./src/ui/index.ts"
+  },
+  "scripts": {
+    "clean": "git clean -xdf .turbo node_modules",
+    "format": "biome check .",
+    "lint": "biome check .",
+    "typecheck": "tsc --noEmit"
+  },
+  "dependencies": {
+    "@tocld/db": "workspace:*",
+    "@tocld/supabase": "workspace:*",
+    "stripe": "^17.4.0",
+    "@polar-sh/sdk": "^0.14.0",
+    "zod": "^4.1.5"
+  },
+  "devDependencies": {
+    "@tocld/tsconfig": "workspace:*",
+    "typescript": "^5.9.2"
+  }
+}

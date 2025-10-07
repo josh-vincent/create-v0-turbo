@@ -1,0 +1,17 @@
+{
+  "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+  "name": "connect-button",
+  "type": "registry:ui",
+  "title": "OAuth Connect Button",
+  "description": "OAuth connect button for third-party integrations (Gmail, Outlook, Slack, etc.).",
+  "dependencies": [],
+  "registryDependencies": [],
+  "files": [
+    {
+      "path": "registry/new-york/ui/connect-button/connect-button.tsx",
+      "content": "\"use client\";\n\nimport * as React from \"react\";\nimport { api } from \"@tocld/api/client\";\nimport { cn } from \"@tocld/ui/lib\";\nimport type { IntegrationProvider } from \"../types\";\n\ninterface ConnectButtonProps {\n  provider: IntegrationProvider;\n  redirectUri?: string;\n  onSuccess?: () => void;\n  onError?: (error: Error) => void;\n  children?: React.ReactNode;\n  className?: string;\n}\n\nconst PROVIDER_LABELS: Record<IntegrationProvider, string> = {\n  gmail: \"Connect Gmail\",\n  outlook: \"Connect Outlook\",\n  google_drive: \"Connect Google Drive\",\n  dropbox: \"Connect Dropbox\",\n  slack: \"Connect Slack\",\n  github: \"Connect GitHub\",\n};\n\n/**\n * OAuth connect button for integrations\n */\nexport function ConnectButton({\n  provider,\n  redirectUri,\n  onSuccess,\n  onError,\n  children,\n  className,\n}: ConnectButtonProps) {\n  const [isLoading, setIsLoading] = React.useState(false);\n  const getAuthUrl = api.integration.getAuthUrl.useMutation();\n\n  const handleConnect = async () => {\n    setIsLoading(true);\n\n    try {\n      const result = await getAuthUrl.mutateAsync({\n        provider,\n        redirectUri:\n          redirectUri || `${window.location.origin}/api/auth/callback/${provider}`,\n      });\n\n      onSuccess?.();\n\n      // Redirect to OAuth provider\n      window.location.href = result.authUrl;\n    } catch (error) {\n      console.error(\"OAuth error:\", error);\n      onError?.(error as Error);\n      setIsLoading(false);\n    }\n  };\n\n  return (\n    <button\n      type=\"button\"\n      onClick={handleConnect}\n      disabled={isLoading}\n      className={cn(\n        \"inline-flex items-center justify-center px-4 py-2 rounded-lg font-medium transition-colors\",\n        \"bg-primary text-primary-foreground hover:bg-primary/90\",\n        \"focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-offset-2\",\n        \"disabled:opacity-50 disabled:pointer-events-none\",\n        className,\n      )}\n    >\n      {isLoading ? \"Connecting...\" : children || PROVIDER_LABELS[provider]}\n    </button>\n  );\n}\n",
+      "type": "registry:ui"
+    }
+  ],
+  "categories": ["integration"]
+}

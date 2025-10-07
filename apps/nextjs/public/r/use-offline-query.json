@@ -1,0 +1,16 @@
+{
+  "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+  "name": "use-offline-query",
+  "type": "registry:hook",
+  "title": "useOfflineQuery Hook",
+  "description": "Enhanced useQuery hook with offline-first behavior. Automatically shows stale data when offline.",
+  "dependencies": ["@tanstack/react-query"],
+  "registryDependencies": ["use-network-status"],
+  "files": [
+    {
+      "path": "registry/new-york/ui/use-offline-query.ts",
+      "content": "/**\n * Offline Query Hook\n * Enhanced useQuery hook with offline-first behavior\n */\nimport {\n  useQuery,\n  type UseQueryOptions,\n  type UseQueryResult,\n} from \"@tanstack/react-query\";\nimport { useNetworkStatus } from \"./use-network-status\";\n\nexport interface OfflineQueryOptions<TData, TError>\n  extends Omit<UseQueryOptions<TData, TError>, \"queryKey\" | \"queryFn\"> {\n  /** Whether to show stale data when offline (default: true) */\n  showStaleWhenOffline?: boolean;\n  /** Custom error message when offline */\n  offlineMessage?: string;\n}\n\n/**\n * Enhanced useQuery that works offline\n *\n * @example\n * ```tsx\n * const { data, isOffline } = useOfflineQuery({\n *   queryKey: ['todos'],\n *   queryFn: fetchTodos,\n *   showStaleWhenOffline: true\n * });\n *\n * if (isOffline) {\n *   return <Banner>Showing cached data</Banner>\n * }\n * ```\n */\nexport function useOfflineQuery<TData = unknown, TError = Error>(\n  queryKey: unknown[],\n  queryFn: () => Promise<TData>,\n  options: OfflineQueryOptions<TData, TError> = {},\n): UseQueryResult<TData, TError> & { isOffline: boolean } {\n  const { isOnline } = useNetworkStatus();\n  const {\n    showStaleWhenOffline = true,\n    offlineMessage = \"You are offline. Showing cached data.\",\n    ...queryOptions\n  } = options;\n\n  const query = useQuery<TData, TError>({\n    queryKey,\n    queryFn,\n    ...queryOptions,\n    // When offline, prevent refetching and show stale data\n    enabled: isOnline && (queryOptions.enabled ?? true),\n    staleTime: isOnline ? queryOptions.staleTime : Number.POSITIVE_INFINITY,\n    refetchOnMount: isOnline && (queryOptions.refetchOnMount ?? true),\n    refetchOnWindowFocus: isOnline && (queryOptions.refetchOnWindowFocus ?? true),\n    refetchOnReconnect: true, // Always refetch when reconnecting\n  });\n\n  return {\n    ...query,\n    isOffline: !isOnline,\n  };\n}\n",
+      "type": "registry:hook"
+    }
+  ]
+}
