@@ -13,9 +13,9 @@ Last Updated: 2025-01-07
 - [x] Implement `/docs/testing` page
 
 ### Settings Pages
-- [ ] Create `/dashboard/settings` page (profile settings)
-- [ ] Create `/dashboard/settings/billing` page (redirect to existing billing)
-- [ ] Create `/dashboard/settings/team` page (team management)
+- [x] Create `/dashboard/settings` page (profile settings)
+- [x] Create `/dashboard/settings/billing` page (redirect to existing billing)
+- [x] Create `/dashboard/settings/team` page (team management)
 
 ### Enhanced Components (Tier 1)
 - [ ] Add shadcn data-table component
