@@ -1,6 +1,6 @@
 "use client";
 
-import { useQueryClient } from "@tanstack/react-query";
+import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import { useTRPC } from "~/trpc/react";
 import { Card } from "@tocld/ui/card";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@tocld/ui/table";
@@ -13,28 +13,28 @@ export default function TimePage() {
   const queryClient = useQueryClient();
 
   // Queries
-  const { data: entries, isLoading } = trpc.time.list.useQuery({});
-  const { data: runningTimer } = trpc.time.getRunning.useQuery();
-  const { data: stats } = trpc.time.getStats.useQuery({});
+  const { data: entries, isLoading } = useQuery(trpc.time.list.queryOptions({}));
+  const { data: runningTimer } = useQuery(trpc.time.getRunning.queryOptions());
+  const { data: stats } = useQuery(trpc.time.getStats.queryOptions({}));
 
   // Mutations
-  const startMutation = trpc.time.start.useMutation({
+  const startMutation = useMutation(trpc.time.start.mutationOptions({
     onSuccess: async () => {
       await queryClient.invalidateQueries(trpc.time.pathFilter());
     },
-  });
+  }));
 
-  const stopMutation = trpc.time.stop.useMutation({
+  const stopMutation = useMutation(trpc.time.stop.mutationOptions({
     onSuccess: async () => {
       await queryClient.invalidateQueries(trpc.time.pathFilter());
     },
-  });
+  }));
 
-  const deleteMutation = trpc.time.delete.useMutation({
+  const deleteMutation = useMutation(trpc.time.delete.mutationOptions({
     onSuccess: async () => {
       await queryClient.invalidateQueries(trpc.time.pathFilter());
     },
-  });
+  }));
 
   const handleStart = async (data: {
     projectName: string;

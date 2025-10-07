@@ -1,7 +1,7 @@
 "use client";
 
 import { useState } from "react";
-import { useQueryClient } from "@tanstack/react-query";
+import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import { useTRPC } from "~/trpc/react";
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from "@tocld/ui/dialog";
 import { Button } from "@tocld/ui/button";
@@ -18,22 +18,22 @@ export default function ExpensesPage() {
   const queryClient = useQueryClient();
 
   // Queries
-  const { data: expenses, isLoading } = trpc.expense.list.useQuery({});
-  const { data: stats } = trpc.expense.getStats.useQuery();
+  const { data: expenses, isLoading } = useQuery(trpc.expense.list.queryOptions({}));
+  const { data: stats } = useQuery(trpc.expense.getStats.queryOptions());
 
   // Mutations
-  const createMutation = trpc.expense.create.useMutation({
+  const createMutation = useMutation(trpc.expense.create.mutationOptions({
     onSuccess: async () => {
       setIsCreateOpen(false);
       await queryClient.invalidateQueries(trpc.expense.pathFilter());
     },
-  });
+  }));
 
-  const deleteMutation = trpc.expense.delete.useMutation({
+  const deleteMutation = useMutation(trpc.expense.delete.mutationOptions({
     onSuccess: async () => {
       await queryClient.invalidateQueries(trpc.expense.pathFilter());
     },
-  });
+  }));
 
   const handleCreate = async (data: z.infer<typeof createExpenseSchema>) => {
     await createMutation.mutateAsync(data);

@@ -1,7 +1,7 @@
 "use client";
 
 import { useState } from "react";
-import { useQueryClient } from "@tanstack/react-query";
+import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import { useTRPC } from "~/trpc/react";
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from "@tocld/ui/dialog";
 import { Button } from "@tocld/ui/button";
@@ -18,22 +18,22 @@ export default function InvoicesPage() {
   const queryClient = useQueryClient();
 
   // Queries
-  const { data: invoices, isLoading } = trpc.invoice.list.useQuery({});
-  const { data: stats } = trpc.invoice.getStats.useQuery();
+  const { data: invoices, isLoading } = useQuery(trpc.invoice.list.queryOptions({}));
+  const { data: stats } = useQuery(trpc.invoice.getStats.queryOptions());
 
   // Mutations
-  const createMutation = trpc.invoice.create.useMutation({
+  const createMutation = useMutation(trpc.invoice.create.mutationOptions({
     onSuccess: async () => {
       setIsCreateOpen(false);
       await queryClient.invalidateQueries(trpc.invoice.pathFilter());
     },
-  });
+  }));
 
-  const deleteMutation = trpc.invoice.delete.useMutation({
+  const deleteMutation = useMutation(trpc.invoice.delete.mutationOptions({
     onSuccess: async () => {
       await queryClient.invalidateQueries(trpc.invoice.pathFilter());
     },
-  });
+  }));
 
   const handleCreate = async (data: z.infer<typeof createInvoiceSchema>) => {
     await createMutation.mutateAsync(data);

@@ -8,8 +8,6 @@ import { SafeAreaProvider } from "react-native-safe-area-context";
 import { queryClient } from "~/utils/api";
 import { configureRevenueCat } from "~/utils/revenuecat";
 
-import "../styles.css";
-
 // This is the main layout of the app
 // It wraps your pages with the providers they need
 export default function RootLayout() {

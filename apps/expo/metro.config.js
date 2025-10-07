@@ -38,7 +38,6 @@ config.symbolicator = {
 const configWithCache = withTurborepoManagedCache(config);
 
 module.exports = withNativeWind(configWithCache, {
-  input: "./src/styles.css",
   configPath: "./tailwind.config.ts",
 });
 
