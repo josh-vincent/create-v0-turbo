@@ -8,6 +8,7 @@ import {
   Layers,
   LayoutDashboard,
   LifeBuoy,
+  MessageSquare,
   Package,
   Settings2,
   Zap,
@@ -54,6 +55,10 @@ const data = {
         {
           title: "Analytics",
           url: "/dashboard/analytics",
+        },
+        {
+          title: "Voice Chat",
+          url: "/dashboard/voice-chat",
         },
         {
           title: "Invoices",

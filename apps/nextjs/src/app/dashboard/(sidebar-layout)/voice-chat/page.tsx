@@ -30,18 +30,26 @@ interface ChatMessage {
   content: string
 }
 
-export default function Page() {
+export default function VoiceChatPage() {
   const [messages, setMessages] = useState<ChatMessage[]>([])
   const [copiedIndex, setCopiedIndex] = useState<number | null>(null)
 
   if (!DEFAULT_AGENT_ID) {
     return (
-      <div className="relative mx-auto h-[600px] w-full flex items-center justify-center">
-        <Card className="max-w-lg p-8">
+      <div className="flex-1 space-y-6 p-8">
+        {/* Header */}
+        <div>
+          <h2 className="text-3xl font-bold tracking-tight">AI Voice Chat</h2>
+          <p className="text-muted-foreground">
+            Powered by ElevenLabs Conversational AI
+          </p>
+        </div>
+
+        <Card className="max-w-2xl p-8">
           <CardContent className="space-y-4">
             <div className="flex items-center gap-3">
               <Orb className="size-12" />
-              <h2 className="text-2xl font-semibold">Voice Chat Setup Required</h2>
+              <h3 className="text-xl font-semibold">Setup Required</h3>
             </div>
             <p className="text-muted-foreground">
               To use the voice chat feature, you need to configure an ElevenLabs AI agent.
@@ -54,7 +62,7 @@ export default function Page() {
               </li>
               <li>Create a Conversational AI agent in the dashboard</li>
               <li>Copy your agent ID</li>
-              <li>Add it to your <code className="bg-muted px-1 py-0.5 rounded">.env</code> file:
+              <li>Add it to your <code className="bg-muted px-1 py-0.5 rounded">.env.local</code> file:
                 <pre className="mt-2 p-2 bg-muted rounded text-xs">
                   NEXT_PUBLIC_ELEVENLABS_AGENT_ID=your_agent_id_here
                 </pre>
@@ -68,8 +76,17 @@ export default function Page() {
   }
 
   return (
-    <div className="relative mx-auto h-[600px] w-full">
-      <Card className="flex h-full w-full flex-col gap-0 overflow-hidden">
+    <div className="flex-1 space-y-6 p-8">
+      {/* Header */}
+      <div>
+        <h2 className="text-3xl font-bold tracking-tight">AI Voice Chat</h2>
+        <p className="text-muted-foreground">
+          Powered by ElevenLabs Conversational AI
+        </p>
+      </div>
+
+      {/* Chat Interface */}
+      <Card className="flex h-[calc(100vh-280px)] w-full flex-col gap-0 overflow-hidden">
         <CardContent className="relative flex-1 overflow-hidden p-0">
           <Conversation className="absolute inset-0 pb-[88px]">
             <ConversationContent className="flex min-w-0 flex-col gap-2 p-6 pb-6">
@@ -77,7 +94,7 @@ export default function Page() {
                 <ConversationEmptyState
                   icon={<Orb className="size-12" />}
                   title="Start a conversation"
-                  description="Tap the phone button or type a message"
+                  description="Tap the phone button or type a message to begin"
                 />
               ) : (
                 messages.map((message, index) => {
