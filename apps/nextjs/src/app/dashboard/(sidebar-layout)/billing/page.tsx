@@ -1,5 +1,5 @@
 import Link from "next/link";
-import { Card } from "~/components/ui/card";
+import { Card } from "@tocld/ui/card";
 import { SubscriptionCard } from "~/components/payments/subscription-card";
 import { BillingCards } from "~/components/payments/billing-cards";
 
