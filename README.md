@@ -91,6 +91,18 @@ open http://localhost:3000
 
 All features work with **mock data** - no Stripe or Gmail needed! See [QUICKSTART.md](./QUICKSTART.md) for more.
 
+### 📦 Explore Pre-built Blocks
+
+Browse beautiful, copy-paste ready feature blocks in [BLOCKS.md](./BLOCKS.md):
+- **Dashboard** - Task management with stats
+- **Analytics** - Charts and metrics
+- **Finance** - Invoices, expenses, time tracking
+- **Voice Chat** - ElevenLabs AI conversation
+- **Integrations** - OAuth connections
+- **Billing** - Stripe subscription management
+
+All blocks work in mock mode and follow consistent patterns!
+
 ### Full Setup (With Supabase)
 
 ### 1. Install dependencies
