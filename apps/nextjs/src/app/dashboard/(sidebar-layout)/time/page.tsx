@@ -8,7 +8,7 @@ import { Badge } from "@tocld/ui/badge";
 import { Button } from "@tocld/ui/button";
 
 export default function TimePage() {
-  const utils = api.useUtils();
+  const utils = api.useContext();
 
   // Queries
   const { data: entries, isLoading } = api.time.list.useQuery({});

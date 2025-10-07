@@ -13,7 +13,7 @@ import type { createExpenseSchema } from "@tocld/features-finance/types";
 
 export default function ExpensesPage() {
   const [isCreateOpen, setIsCreateOpen] = useState(false);
-  const utils = api.useUtils();
+  const utils = api.useContext();
 
   // Queries
   const { data: expenses, isLoading } = api.expense.list.useQuery({});
