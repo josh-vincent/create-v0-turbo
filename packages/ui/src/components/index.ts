@@ -8,6 +8,6 @@
 
 // Import and re-export to ensure proper resolution
 import { Button, type ButtonProps } from "./button";
-import { Input, type InputProps } from "./input.native";
+import { Input, type InputProps } from "../input";
 
 export { Button, type ButtonProps, Input, type InputProps };
