@@ -1,6 +1,7 @@
 "use client";
 
-import { api } from "~/trpc/react";
+import { useQueryClient } from "@tanstack/react-query";
+import { useTRPC } from "~/trpc/react";
 import { Card } from "@tocld/ui/card";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@tocld/ui/table";
 import { TimeTracker } from "@tocld/features-finance/ui";
@@ -8,33 +9,30 @@ import { Badge } from "@tocld/ui/badge";
 import { Button } from "@tocld/ui/button";
 
 export default function TimePage() {
-  const utils = api.useContext();
+  const trpc = useTRPC();
+  const queryClient = useQueryClient();
 
   // Queries
-  const { data: entries, isLoading } = api.time.list.useQuery({});
-  const { data: runningTimer } = api.time.getRunning.useQuery();
-  const { data: stats } = api.time.getStats.useQuery({});
+  const { data: entries, isLoading } = trpc.time.list.useQuery({});
+  const { data: runningTimer } = trpc.time.getRunning.useQuery();
+  const { data: stats } = trpc.time.getStats.useQuery({});
 
   // Mutations
-  const startMutation = api.time.start.useMutation({
-    onSuccess: () => {
-      utils.time.getRunning.invalidate();
-      utils.time.list.invalidate();
+  const startMutation = trpc.time.start.useMutation({
+    onSuccess: async () => {
+      await queryClient.invalidateQueries(trpc.time.pathFilter());
     },
   });
 
-  const stopMutation = api.time.stop.useMutation({
-    onSuccess: () => {
-      utils.time.getRunning.invalidate();
-      utils.time.list.invalidate();
-      utils.time.getStats.invalidate();
+  const stopMutation = trpc.time.stop.useMutation({
+    onSuccess: async () => {
+      await queryClient.invalidateQueries(trpc.time.pathFilter());
     },
   });
 
-  const deleteMutation = api.time.delete.useMutation({
-    onSuccess: () => {
-      utils.time.list.invalidate();
-      utils.time.getStats.invalidate();
+  const deleteMutation = trpc.time.delete.useMutation({
+    onSuccess: async () => {
+      await queryClient.invalidateQueries(trpc.time.pathFilter());
     },
   });
 
