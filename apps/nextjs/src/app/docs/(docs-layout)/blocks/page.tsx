@@ -1,6 +1,7 @@
 import { DocsLayout } from "@/components/docs/docs-layout";
 import { Alert, AlertDescription, AlertTitle } from "@tocld/ui/alert";
 import { Badge } from "@tocld/ui/badge";
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@tocld/ui/tabs";
 import { Info, Server, Smartphone } from "lucide-react";
 import { LayoutDashboard } from "lucide-react";
 import { BlockWrapper } from "@/components/blocks/block-wrapper";
@@ -16,7 +17,8 @@ import {
   VoiceChatBlockExample,
   IntegrationsBlockExample,
   BillingBlockExample,
-} from "../_components/ui-examples";
+  SettingsBlockExample,
+} from "@/components/blocks/ui-examples";
 
 // Map block names to their preview components
 const blockPreviews: Record<string, React.ReactNode> = {
@@ -28,6 +30,7 @@ const blockPreviews: Record<string, React.ReactNode> = {
   "voice-chat": <VoiceChatBlockExample />,
   integrations: <IntegrationsBlockExample />,
   billing: <BillingBlockExample />,
+  settings: <SettingsBlockExample />,
 };
 
 export default function BlocksPage() {
@@ -79,25 +82,36 @@ export default function BlocksPage() {
               icon={<block.icon className="h-5 w-5 text-primary" />}
               liveUrl={block.liveUrl}
             >
-              {/* Preview */}
-              <ComponentPreview name={block.name}>
-                {blockPreviews[block.name]}
-              </ComponentPreview>
+              <Tabs defaultValue="preview" className="w-full">
+                <TabsList>
+                  <TabsTrigger value="preview">Preview</TabsTrigger>
+                  <TabsTrigger value="code">Code</TabsTrigger>
+                  {block.routes && <TabsTrigger value="routes">Routes</TabsTrigger>}
+                </TabsList>
 
-              {/* Code */}
-              {block.code && <BlockCodeViewer code={block.code} />}
+                <TabsContent value="preview" className="mt-4">
+                  <ComponentPreview name={block.name}>
+                    {blockPreviews[block.name]}
+                  </ComponentPreview>
+                </TabsContent>
 
-              {/* tRPC Routes */}
-              {block.routes && (
-                <div className="flex flex-wrap gap-2">
-                  <Badge variant="outline">tRPC Routes</Badge>
-                  {block.routes.map((route) => (
-                    <code key={route} className="text-xs rounded bg-muted px-2 py-1">
-                      {route}
-                    </code>
-                  ))}
-                </div>
-              )}
+                <TabsContent value="code" className="mt-4">
+                  {block.code && <BlockCodeViewer code={block.code} />}
+                </TabsContent>
+
+                {block.routes && (
+                  <TabsContent value="routes" className="mt-4">
+                    <div className="flex flex-wrap gap-2">
+                      <Badge variant="outline">tRPC Routes</Badge>
+                      {block.routes.map((route) => (
+                        <code key={route} className="text-xs rounded bg-muted px-2 py-1">
+                          {route}
+                        </code>
+                      ))}
+                    </div>
+                  </TabsContent>
+                )}
+              </Tabs>
             </BlockWrapper>
           ))}
         </section>

@@ -1,10 +1,14 @@
-import { api } from "@tocld/api/native";
 import * as React from "react";
 import { ActivityIndicator, Pressable, Text } from "react-native";
 import { type CheckoutButtonProps, checkoutButtonVariants } from "./checkout-button";
 
+export interface NativeCheckoutButtonProps extends CheckoutButtonProps {
+  api: any; // tRPC client from the Expo app
+}
+
 /**
  * Native version of CheckoutButton (opens in-app browser)
+ * @param api - tRPC client from the Expo app
  */
 export function CheckoutButton({
   priceId,
@@ -16,7 +20,8 @@ export function CheckoutButton({
   disabled,
   onSuccess,
   onError,
-}: CheckoutButtonProps) {
+  api,
+}: NativeCheckoutButtonProps) {
   const [isLoading, setIsLoading] = React.useState(false);
   const createCheckout = api.subscription.createCheckout.useMutation();
 

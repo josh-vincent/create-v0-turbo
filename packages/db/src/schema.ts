@@ -7,3 +7,5 @@ export * from "./schema/integrations";
 export * from "./schema/invoices";
 export * from "./schema/expenses";
 export * from "./schema/time-entries";
+export * from "./schema/customers";
+export * from "./schema/jobs";

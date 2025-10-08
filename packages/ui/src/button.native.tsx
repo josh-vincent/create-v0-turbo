@@ -5,8 +5,8 @@
 import * as React from "react";
 
 import { cn } from "@tocld/ui";
-import { Pressable, Text } from "../primitives";
-import { type BaseButtonProps, buttonVariants } from "./button";
+import { Pressable, Text } from "./primitives";
+import { type BaseButtonProps, buttonVariants } from "./components/button";
 
 export interface ButtonProps extends BaseButtonProps {
   onPress?: () => void;

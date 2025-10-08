@@ -16,6 +16,24 @@ export default {
   		}
   	},
   	extend: {
+		fontFamily: {
+			sans: "var(--font-geist-sans)",
+			mono: "var(--font-geist-mono)",
+			serif: "var(--font-serif)",
+		},
+		border: "hsl(var(--border))",
+		input: "hsl(var(--input))",
+		ring: "hsl(var(--ring))",
+		background: "hsl(var(--background))",
+		foreground: "hsl(var(--foreground))",
+		primary: {
+			DEFAULT: "hsl(var(--primary))",
+			foreground: "hsl(var(--primary-foreground))",
+		},
+		secondary: {
+			DEFAULT: "hsl(var(--secondary))",
+			foreground: "hsl(var(--secondary-foreground))",
+		},
   		borderRadius: {
   			lg: 'var(--radius)',
   			md: 'calc(var(--radius) - 2px)',

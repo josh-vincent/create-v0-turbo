@@ -1,5 +1,7 @@
 import { authRouter } from "./router/auth";
+import { demoRouter } from "./router/demo";
 import { taskRouter } from "./router/task";
+import { teamRouter } from "./router/team";
 import { createTRPCRouter } from "./trpc";
 
 // Feature modules (optional - only imported if packages are installed)
@@ -8,6 +10,9 @@ let integrationRouter: any;
 let invoiceRouter: any;
 let expenseRouter: any;
 let timeRouter: any;
+let customerRouter: any;
+let customerNoteRouter: any;
+let customerActivityRouter: any;
 
 try {
   const paymentsModule = require("@tocld/features-payments/routers");
@@ -32,15 +37,29 @@ try {
   // Finance features not installed
 }
 
+try {
+  const crmModule = require("@tocld/features-crm/routers");
+  customerRouter = crmModule.customerRouter;
+  customerNoteRouter = crmModule.customerNoteRouter;
+  customerActivityRouter = crmModule.customerActivityRouter;
+} catch {
+  // CRM features not installed
+}
+
 export const appRouter = createTRPCRouter({
   auth: authRouter,
+  demo: demoRouter,
   task: taskRouter,
+  team: teamRouter,
   // Conditionally add feature routers if packages are installed
   ...(subscriptionRouter ? { subscription: subscriptionRouter } : {}),
   ...(integrationRouter ? { integration: integrationRouter } : {}),
   ...(invoiceRouter ? { invoice: invoiceRouter } : {}),
   ...(expenseRouter ? { expense: expenseRouter } : {}),
   ...(timeRouter ? { time: timeRouter } : {}),
+  ...(customerRouter ? { customer: customerRouter } : {}),
+  ...(customerNoteRouter ? { customerNote: customerNoteRouter } : {}),
+  ...(customerActivityRouter ? { customerActivity: customerActivityRouter } : {}),
 });
 
 // export type definition of API

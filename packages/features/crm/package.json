@@ -1,0 +1,19 @@
+{
+  "name": "@tocld/features-crm",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "exports": {
+    ".": "./src/index.ts",
+    "./routers": "./src/routers/index.ts",
+    "./providers": "./src/providers/index.ts",
+    "./ui": "./src/ui/index.ts",
+    "./ui/*": "./src/ui/*.tsx",
+    "./types": "./src/types.ts"
+  },
+  "dependencies": {
+    "@tocld/api": "workspace:*",
+    "@tocld/db": "workspace:*",
+    "@tocld/validators": "workspace:*"
+  }
+}

@@ -1,0 +1,99 @@
+{
+  "name": "@tocld/ui",
+  "version": "0.1.0",
+  "description": "React Native component registry for create-v0-turbo",
+  "components": [
+    {
+      "name": "button",
+      "type": "component",
+      "files": [
+        {
+          "path": "src/components/button.ts",
+          "type": "shared"
+        },
+        {
+          "path": "src/components/button.native.tsx",
+          "type": "native"
+        }
+      ],
+      "dependencies": ["@tocld/ui/primitives/pressable", "@tocld/ui/primitives/text"],
+      "variants": ["default", "destructive", "outline", "secondary", "ghost", "link"],
+      "examples": [
+        {
+          "name": "Basic",
+          "code": "import { Button } from '@tocld/ui/button';\n\n<Button>Click me</Button>"
+        },
+        {
+          "name": "With variant",
+          "code": "import { Button } from '@tocld/ui/button';\n\n<Button variant=\"destructive\">Delete</Button>"
+        }
+      ]
+    },
+    {
+      "name": "badge",
+      "type": "component",
+      "files": [
+        {
+          "path": "src/components/badge.ts",
+          "type": "shared"
+        },
+        {
+          "path": "src/components/badge.native.tsx",
+          "type": "native"
+        }
+      ],
+      "dependencies": ["@tocld/ui/primitives/view", "@tocld/ui/primitives/text"],
+      "variants": ["default", "success", "warning", "error", "info", "secondary", "outline"],
+      "examples": [
+        {
+          "name": "Basic",
+          "code": "import { Badge } from '@tocld/ui/badge';\n\n<Badge>New</Badge>"
+        },
+        {
+          "name": "Status badge",
+          "code": "import { Badge } from '@tocld/ui/badge';\n\n<Badge variant=\"success\">Active</Badge>\n<Badge variant=\"error\">Failed</Badge>"
+        }
+      ]
+    },
+    {
+      "name": "card",
+      "type": "component",
+      "files": [
+        {
+          "path": "src/components/card.native.tsx",
+          "type": "native"
+        }
+      ],
+      "dependencies": ["@tocld/ui/primitives/view", "@tocld/ui/primitives/text"],
+      "subcomponents": ["Card", "CardHeader", "CardTitle", "CardDescription", "CardContent", "CardFooter"],
+      "examples": [
+        {
+          "name": "Basic card",
+          "code": "import { Card, CardHeader, CardTitle, CardDescription, CardContent } from '@tocld/ui/card';\n\n<Card>\n  <CardHeader>\n    <CardTitle>Title</CardTitle>\n    <CardDescription>Description</CardDescription>\n  </CardHeader>\n  <CardContent>Content</CardContent>\n</Card>"
+        }
+      ]
+    }
+  ],
+  "primitives": [
+    {
+      "name": "view",
+      "files": ["src/primitives/view.native.tsx"],
+      "description": "Extended View component with NativeWind className support"
+    },
+    {
+      "name": "text",
+      "files": ["src/primitives/text.native.tsx"],
+      "description": "Extended Text component with NativeWind className support"
+    },
+    {
+      "name": "pressable",
+      "files": ["src/primitives/pressable.native.tsx"],
+      "description": "Extended Pressable component with NativeWind className support"
+    },
+    {
+      "name": "text-input",
+      "files": ["src/primitives/text-input.native.tsx"],
+      "description": "Extended TextInput component with NativeWind className support"
+    }
+  ]
+}

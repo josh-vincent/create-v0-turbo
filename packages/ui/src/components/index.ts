@@ -8,5 +8,3 @@
 
 // Re-export everything from button (Metro will resolve to .native.tsx on React Native)
 export * from "./button";
-// Re-export everything from input (Metro will resolve to .native.tsx on React Native)
-export * from "../input";

@@ -254,32 +254,56 @@ export function TimeTrackingBlockExample() {
 }
 
 export function VoiceChatBlockExample() {
+  // Demo messages to show the UI
+  const demoMessages = [
+    { role: "user" as const, content: "Hello! Can you help me with my project?" },
+    { role: "assistant" as const, content: "Of course! I'd be happy to help. What's your project about?" },
+  ];
+
   return (
     <div className="space-y-4">
-      {/* Chat Interface */}
-      <Card>
-        <CardHeader>
-          <CardTitle className="text-base">AI Conversation</CardTitle>
+      {/* Voice Chat UI Preview */}
+      <Card className="overflow-hidden">
+        <CardHeader className="pb-2">
+          <CardTitle className="text-base">AI Voice Chat</CardTitle>
+          <p className="text-xs text-muted-foreground">
+            ElevenLabs Conversational AI with voice & text
+          </p>
         </CardHeader>
         <CardContent className="space-y-3">
-          {/* Messages */}
-          <div className="space-y-2">
-            <div className="rounded-lg bg-muted p-3">
-              <div className="text-xs font-medium text-muted-foreground mb-1">You</div>
-              <div className="text-sm">Hello, how can you help me today?</div>
+          {/* Messages Preview */}
+          <div className="space-y-2 rounded-lg border bg-muted/30 p-3 min-h-[120px]">
+            {demoMessages.map((msg, idx) => (
+              <div
+                key={idx}
+                className={`flex gap-2 ${msg.role === "assistant" ? "flex-row-reverse" : ""}`}
+              >
+                <div className={`rounded-lg px-3 py-2 text-xs max-w-[80%] ${
+                  msg.role === "user"
+                    ? "bg-primary text-primary-foreground ml-auto"
+                    : "bg-muted"
+                }`}>
+                  {msg.content}
+                </div>
+              </div>
+            ))}
+          </div>
+
+          {/* Voice Bar Preview */}
+          <div className="flex items-center gap-2 rounded-lg border bg-card p-2">
+            <div className="h-8 flex-1 rounded bg-muted/50 flex items-center justify-center">
+              <span className="text-[10px] text-muted-foreground">🎤 Voice Waveform</span>
             </div>
-            <div className="rounded-lg bg-primary/10 p-3">
-              <div className="text-xs font-medium text-muted-foreground mb-1">Assistant</div>
-              <div className="text-sm">I'm here to help! I can assist with various tasks...</div>
+            <div className="flex gap-1">
+              <Button size="sm" variant="ghost" className="h-8 w-8 p-0 text-xs">🎤</Button>
+              <Button size="sm" variant="ghost" className="h-8 w-8 p-0 text-xs">⌨️</Button>
+              <Button size="sm" variant="ghost" className="h-8 w-8 p-0 text-xs">📞</Button>
             </div>
           </div>
 
-          {/* Input */}
-          <div className="flex gap-2">
-            <Input placeholder="Type a message..." />
-            <Button size="icon">🎤</Button>
-            <Button>Send</Button>
-          </div>
+          <p className="text-[10px] text-muted-foreground text-center">
+            Uses: Conversation, ConversationBar, Message, Orb components
+          </p>
         </CardContent>
       </Card>
     </div>
@@ -347,6 +371,40 @@ export function BillingBlockExample() {
           <div className="flex gap-2 pt-2">
             <Button variant="outline" className="flex-1">Manage</Button>
             <Button variant="ghost" className="flex-1">Cancel</Button>
+          </div>
+        </CardContent>
+      </Card>
+    </div>
+  );
+}
+
+
+export function SettingsBlockExample() {
+  const teamMember = {
+    name: "John Doe",
+    email: "john@example.com",
+    role: "Owner",
+  };
+
+  return (
+    <div className="space-y-4">
+      <Card>
+        <CardHeader>
+          <CardTitle className="text-base">Team Members</CardTitle>
+          <CardDescription>1 member</CardDescription>
+        </CardHeader>
+        <CardContent>
+          <div className="flex items-center justify-between p-3 border rounded-lg">
+            <div className="flex items-center gap-3">
+              <div className="h-8 w-8 rounded-full bg-primary/10 flex items-center justify-center text-xs font-medium">
+                {teamMember.name.split(" ").map(n => n[0]).join("")}
+              </div>
+              <div>
+                <p className="text-sm font-medium">{teamMember.name}</p>
+                <p className="text-xs text-muted-foreground">{teamMember.email}</p>
+              </div>
+            </div>
+            <Badge variant="outline">{teamMember.role}</Badge>
           </div>
         </CardContent>
       </Card>

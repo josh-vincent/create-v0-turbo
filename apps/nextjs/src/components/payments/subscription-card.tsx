@@ -1,8 +1,7 @@
 "use client";
 
 import { SubscriptionCard as BaseSubscriptionCard } from "@tocld/features-payments/ui";
-import type { SubscriptionData } from "@tocld/features-payments/ui";
-import { api } from "~/trpc/react";
+import { useTRPC } from "~/trpc/react";
 
 interface SubscriptionCardProps {
   className?: string;
@@ -12,6 +11,8 @@ interface SubscriptionCardProps {
  * App-specific SubscriptionCard that integrates with tRPC
  */
 export function SubscriptionCard({ className }: SubscriptionCardProps) {
+  const api = useTRPC();
+
   // Check if subscription API is available (payments feature enabled)
   const subscriptionApi = (api as any).subscription;
 
@@ -33,28 +34,5 @@ export function SubscriptionCard({ className }: SubscriptionCardProps) {
     );
   }
 
-  const { data: subscription, isLoading } = subscriptionApi.getCurrent.useQuery();
-  const cancelMutation = subscriptionApi.cancel.useMutation();
-  const resumeMutation = subscriptionApi.resume.useMutation();
-  const portalMutation = subscriptionApi.createBillingPortal.useMutation();
-
-  return (
-    <BaseSubscriptionCard
-      className={className}
-      subscription={subscription as SubscriptionData}
-      isLoading={isLoading}
-      onCancel={async () => {
-        await cancelMutation.mutateAsync();
-      }}
-      onResume={async () => {
-        await resumeMutation.mutateAsync();
-      }}
-      onManageBilling={async () => {
-        const result = await portalMutation.mutateAsync({
-          returnUrl: window.location.href,
-        });
-        window.location.href = result.url;
-      }}
-    />
-  );
+  return <BaseSubscriptionCard className={className} api={api} />;
 }

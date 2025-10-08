@@ -121,12 +121,71 @@ import { Button } from "@/components/ui/button";
 - All shadcn/ui components are in `packages/ui/src/`
 - Components are exported via `packages/ui/package.json` exports field
 - Pattern supports cross-platform use (`.tsx` for web, `.native.tsx` for mobile)
+- **Native component registry** at `packages/ui/registry/native.json`
+
+**Cross-Platform Component Pattern:**
+```
+packages/ui/src/
+├── components/
+│   ├── button.ts         # Shared logic & variants (CVA)
+│   ├── button.tsx        # Web implementation (div/button)
+│   └── button.native.tsx # Native implementation (Pressable/View)
+├── badge.tsx             # Web-only (auto-resolves)
+├── badge.native.tsx      # Native variant
+└── card.native.tsx       # Native variant
+```
+
+**Component Resolution:**
+- Expo/React Native automatically uses `.native.tsx` files when present
+- Next.js uses `.tsx` files
+- Shared logic in `.ts` files with CVA variants
+- All components import from `@tocld/ui/<component-name>`
 
 **Adding New Components:**
 ```bash
-# From project root
+# Web component (shadcn)
 cd packages/ui
 bun ui-add <component-name>
+
+# Native variant (manual for now)
+# 1. Create button.ts with CVA variants
+# 2. Create button.native.tsx with View/Pressable/Text
+# 3. Update registry/native.json
+# 4. Export in package.json
+```
+
+**Native Component Examples:**
+
+1. **Badge** (packages/ui/src/components/badge.native.tsx:1):
+```typescript
+import { Badge } from "@tocld/ui/badge";
+
+<Badge>New</Badge>
+<Badge variant="success">Active</Badge>
+<Badge variant="error">Failed</Badge>
+```
+
+2. **Card** (packages/ui/src/card.native.tsx:1):
+```typescript
+import { Card, CardHeader, CardTitle, CardDescription, CardContent } from "@tocld/ui/card";
+
+<Card>
+  <CardHeader>
+    <CardTitle>Title</CardTitle>
+    <CardDescription>Description</CardDescription>
+  </CardHeader>
+  <CardContent>Content here</CardContent>
+</Card>
+```
+
+3. **Button** (packages/ui/src/components/button.native.tsx:1):
+```typescript
+import { Button } from "@tocld/ui/button";
+
+<Button onPress={() => console.log('pressed')}>
+  Click me
+</Button>
+<Button variant="destructive">Delete</Button>
 ```
 
 This will:
@@ -334,6 +393,71 @@ eas build --platform all
 eas submit --platform all
 ```
 
+## NativeWind Configuration (Expo)
+
+**CRITICAL: The Expo app uses NativeWind v4.x (stable) - DO NOT upgrade to v5 preview versions!**
+
+### Why NativeWind v4?
+- NativeWind v5.0.0-preview.1 has critical bugs:
+  - CSS deserialization failures with `@tailwind` directives
+  - Incomplete className processing
+  - Unstable preview release with missing features
+- NativeWind v4.2.1+ is stable and works reliably with Expo 54 + React Native 0.81.4
+
+### Working Configuration (DO NOT MODIFY)
+
+**apps/expo/package.json:**
+```json
+{
+  "dependencies": {
+    "nativewind": "^4.1.23"  // Keep on v4.x - do not upgrade to v5 preview
+  }
+}
+```
+
+**apps/expo/src/styles.css:**
+```css
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+```
+
+**apps/expo/babel.config.js:**
+```javascript
+module.exports = (api) => {
+  api.cache(true);
+  return {
+    presets: ["babel-preset-expo", "nativewind/babel"],  // No jsxImportSource needed
+    plugins: ["react-native-reanimated/plugin"],
+  };
+};
+```
+
+**apps/expo/metro.config.js:**
+```javascript
+module.exports = withNativeWind(configWithCache, {
+  input: "./src/styles.css",  // Must point to CSS file
+  configPath: "./tailwind.config.ts",
+});
+```
+
+**apps/expo/src/app/_layout.tsx:**
+```typescript
+import "../styles.css";  // Must import CSS at top of root layout
+```
+
+**apps/expo/tailwind.config.ts:**
+- Uses standard Tailwind v3.4.17
+- Includes NativeWind preset: `presets: [baseConfig, nativewind]`
+- Colors defined directly in theme (no CSS variables)
+
+### If Styles Break
+1. Check NativeWind version is v4.x (not v5)
+2. Verify CSS import is in `_layout.tsx`
+3. Confirm `metro.config.js` has `input: "./src/styles.css"`
+4. Clear all caches: `rm -rf .expo node_modules/.cache .cache && npx expo start --clear`
+5. DO NOT add `jsxImportSource: "nativewind"` to babel config (causes runtime errors)
+
 ## Important Notes
 
 - **Always check `ctx.isMockMode`** in new tRPC procedures that need database
@@ -342,3 +466,4 @@ eas submit --platform all
 - **Add mock data** to `packages/api/src/mock-data.ts` for new entities
 - **Export from `packages/db/src/schema.ts`** after adding new schema files
 - **Rebuild registry** (`bun run registry:build`) after modifying shadcn components
+- **NEVER upgrade NativeWind** in apps/expo to v5 preview - keep on v4.x stable

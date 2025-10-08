@@ -23,6 +23,12 @@ config.resolver.nodeModulesPaths = [
 // Ensure we resolve from the project root, not monorepo root
 config.resolver.resolverMainFields = ["react-native", "browser", "main"];
 
+// Add path aliases for @ and ~ imports
+config.resolver.extraNodeModules = {
+  "@": path.resolve(projectRoot, "src"),
+  "~": path.resolve(projectRoot, "src"),
+};
+
 // Disable symbolication for anonymous sources to prevent errors
 config.symbolicator = {
   customizeFrame: (frame) => {
@@ -38,6 +44,7 @@ config.symbolicator = {
 const configWithCache = withTurborepoManagedCache(config);
 
 module.exports = withNativeWind(configWithCache, {
+  input: "./src/styles.css",
   configPath: "./tailwind.config.ts",
 });
 

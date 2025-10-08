@@ -1,10 +1,10 @@
 import { Stack } from "expo-router";
 import { Text, View } from "react-native";
-import { SafeAreaView } from "react-native-safe-area-context";
+import {  } from "react-native-safe-area-context";
 
 export default function TestPage() {
   return (
-    <SafeAreaView style={{ flex: 1 }}>
+    <View style={{ flex: 1 }}>
       <Stack.Screen options={{ title: "Test Page" }} />
       <View className="h-full w-full bg-background p-4">
         <Text className="text-center text-5xl font-bold text-foreground">
@@ -14,6 +14,6 @@ export default function TestPage() {
           Expo + NativeWind 5 is configured correctly
         </Text>
       </View>
-    </SafeAreaView>
+    </View>
   );
 }
